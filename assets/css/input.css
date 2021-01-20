@@ -1,0 +1,44 @@
+.wrap{
+    margin-bottom: 10px;
+}
+
+div.wrap div {
+    position: relative;
+    /*margin: 50px 0;*/
+}
+
+.labelInput{
+    position: absolute;
+    top: 0;
+    /*font-size: 30px;*/
+    margin: 10px;
+    padding: 0 7px;
+    /*background-color: teal;*/
+    /*background-color: #abaaa7;*/
+    color: gray;
+    border-radius: 2px;
+    -webkit-transition: top .2s ease-in-out,
+    font-size .2s ease-in-out;
+    transition: top .2s ease-in-out,
+    font-size .2s ease-in-out;
+}
+
+.inputActive {
+    top: -30px;
+    font-size: 15px;
+}
+
+input[type=text],input[type=email],input[type=password] {
+    /*width: 100%;*/
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    /*font-size: 20px;*/
+    /*background-color: teal;*/
+    background-color: rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+input[type=text]:focus {
+    outline: none;
+}
+
