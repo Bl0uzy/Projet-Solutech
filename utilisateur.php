@@ -81,7 +81,7 @@ function afficherUsers($dbh){
                 </li>
 
                 <li>
-                    <a href="ticket.html">
+                    <a href="ticket.php">
                         <i class="nc-icon"><img class="icon-menu" src="assets/img/icons/ticket.svg"></i>
                         <p>Tickets</p>
                     </a>
