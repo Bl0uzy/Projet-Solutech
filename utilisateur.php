@@ -14,6 +14,14 @@ Coded by www.creative-tim.com
 -->
 <?php
 require "bdd.php";
+
+session_start();
+if (isset($_SESSION['id']) && $_SESSION['nom']){
+    if ($_SESSION['nom'] == "Admin"){
+
+    } else header('Location: index.php');
+} else header('Location: index.php');
+
 function afficherUsers($dbh){
     foreach ($dbh -> query('SELECT * FROM users') as $user){
         echo "<tr id='",$user['id'],"' class='btnUtilisateur'>";
@@ -67,7 +75,7 @@ function afficherUsers($dbh){
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
                         <p>Dashboard</p>
                     </a>

@@ -14,6 +14,14 @@ Coded by www.creative-tim.com
 -->
 <?php
 include "bdd.php";
+
+session_start();
+if (isset($_SESSION['id']) && $_SESSION['nom']){
+    if ($_SESSION['nom'] == "Admin"){
+
+    } else header('Location: index.php');
+} else header('Location: index.php');
+
 if (isset($_GET['user'])){
     $id = $_GET['user'];
     $user = $dbh->query("SELECT * FROM users WHERE id = '$id'")->fetch();
@@ -66,7 +74,7 @@ if (isset($_GET['user'])){
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
                         <p>Dashboard</p>
                     </a>

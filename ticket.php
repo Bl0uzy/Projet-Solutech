@@ -13,7 +13,15 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <?php
-include "bdd.php"
+require "bdd.php";
+
+session_start();
+if (isset($_SESSION['id']) && $_SESSION['nom']){
+    if ($_SESSION['nom'] == "Admin"){
+
+    } else header('Location: index.php');
+} else header('Location: index.php');
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -60,7 +68,7 @@ include "bdd.php"
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
                         <p>Dashboard</p>
                     </a>
