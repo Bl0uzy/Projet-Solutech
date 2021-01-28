@@ -258,7 +258,7 @@ function findFocusable($element) {
   if (!$element) {
     return false;
   }
-  return $element.find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]').filter(function () {
+  return $element.find('a[href], area[href], input:not([disabled]), select:not([disabled]), editTicket:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]').filter(function () {
     if (!__WEBPACK_IMPORTED_MODULE_0_jquery___default()(this).is(':visible') || __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this).attr('tabindex') < 0) {
       return false;
     } //only have visible elements and those that have a tabindex greater or equal 0
@@ -4702,7 +4702,7 @@ var Abide = function (_Plugin) {
   }, {
     key: '_init',
     value: function _init() {
-      this.$inputs = this.$element.find('input, textarea, select');
+      this.$inputs = this.$element.find('input, editTicket, select');
 
       this._events();
     }

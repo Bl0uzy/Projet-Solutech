@@ -128,80 +128,13 @@ include "bdd.php"
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-
-
-<!--                    <div class="bloc-filtreTicket">-->
-<!---->
-<!--                        <h5 id="filtre">Filtre <img src="assets/img/icons/arrow.svg" width="10px"></h5>-->
-<!--                        <div id="contentFiltre" style="display: none">-->
-<!---->
-<!---->
-<!---->
-<!---->
-<!--                            <link href='https://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>-->
-<!---->
-<!---->
-<!--                            <div class="wrap">-->
-<!--                                <div>-->
-<!--                                    <label class="labelInput" for="fname">Sujet</label>-->
-<!--                                    <input class="inputJS" id="fname" type="text" class="cool"/>-->
-<!--                                    <label class="labelInput" for="lname">Client</label>-->
-<!--                                    <input class="inputJS" id="lname" type="text" class="cool"/>-->
-<!--                                    <label class="labelInput" for="email">Entreprise</label>-->
-<!--                                    <input class="inputJS" id="email" type="text" class="cool"/>-->
-<!---->
-<!--                                    <span class="selectInput">-->
-<!--                                        <label for="nouveau">Nouveau</label>-->
-<!--                                        <input  id="nouveau" type="checkbox">-->
-<!--                                    </span>-->
-<!--                                    <span class="selectInput">-->
-<!--                                        <label for="enCours">En cours</label>-->
-<!--                                        <input id="enCours" type="checkbox">-->
-<!--                                    </span>-->
-<!--                                    <span class="selectInput">-->
-<!--                                        <label for="resolu">Résolu</label>-->
-<!--                                        <input id="resolu" type="checkbox">-->
-<!--                                    </span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!---->
-<!---->
-<!---->
-<!---->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <table class="table table-ticket">-->
-<!--                        <tr>-->
-<!--                            <th>Sujet</th>-->
-<!--                            <th>Client</th>-->
-<!--                            <th>Entreprise</th>-->
-<!--                            <th>Statut</th>-->
-<!--                            <th>Date</th>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <td>Bug</td>-->
-<!--                            <td>John Doe</td>-->
-<!--                            <td>John Doe Company</td>-->
-<!--                            <td>Nouveau</td>-->
-<!--                            <td>14/01/2021</td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <td>Panne dans le service</td>-->
-<!--                            <td>John Doe</td>-->
-<!--                            <td>John Doe Company</td>-->
-<!--                            <td>En cours</td>-->
-<!--                            <td>14/01/2021</td>-->
-<!--                        </tr>-->
-<!--                    </table>-->
-
                     <table id="table_id" class="display">
                         <thead>
                         <tr>
                             <th>Sujet</th>
                             <th>Client</th>
                             <th>Entreprise</th>
-                            <th>Status</th>
+                            <th>Statut</th>
                             <th>Date</th>
                         </tr>
                         </thead>

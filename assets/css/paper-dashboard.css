@@ -4280,6 +4280,17 @@ License - nucleoapp.com/license/
   text-align: center;
 }
 
+.bloc-user label{
+  line-height: 1.5;
+}
+#labelNom{
+padding-top: 10px;
+}
+.bloc-user input{
+  display: inline-block;
+  width: auto;
+  margin-bottom: 0;
+}
 .bloc-user{
   border: 1px solid lightgray;
   border-radius: 8px;

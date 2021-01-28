@@ -23,16 +23,21 @@ if (isset($_GET['sujet'])){
 //                        echo $dbh->lastInsertId();
     header('Location: editTicket.php?id='.$dbh->lastInsertId());
 }
-if (isset($_POST['editor1'])){
-    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser) VALUES (\"".$_POST['editor1']."\",\"".$_GET['id']."\","."0".")");
-    header('Location: editTicket.php?id='.$_GET['id']);
 
-}
 if (isset($_GET['id'])){
     $ticket = $dbh->query("SELECT * FROM tickets WHERE id = \"".$_GET['id']."\"")->fetch();
     $client = $dbh->query("SELECT * FROM users WHERE id =\"".$ticket['Client']."\"")->fetch();
 }else{
     header('Location: ticket.php');
+}
+if (isset($_POST['editor1'])){
+    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser) VALUES (\"".$_POST['editor1']."\",\"".$_GET['id']."\","."0".")");
+    $statut = $ticket["Statut"];
+    if ($statut == "Nouveau"){
+        $dbh->query("UPDATE tickets SET Statut = \"En cours\" WHERE id = \"".$_GET['id']."\"");
+    }
+    header('Location: editTicket.php?id='.$_GET['id']);
+
 }
 ?>
 <!doctype html>
@@ -142,7 +147,13 @@ if (isset($_GET['id'])){
                     <div class="wrap">
                         <div>
                             <fieldset id="bloc-editTicket">
-                                <legend><input type="text" disabled value="<?php if (isset($_GET['id'])){ echo $ticket['Sujet']; }else echo "erreur" ?>"><span><?php if (isset($_GET['id'])){ echo $client['nom']; }?></span></legend>
+                                <legend><input type="text" disabled value="<?php if (isset($_GET['id'])){ echo $ticket['Sujet']; }else echo "erreur" ?>"><span><?php if (isset($_GET['id'])){ echo $client['nom']; }?></span>
+                                <select id="selectStatut">
+                                    <option <?php if ($ticket['Statut']=="Nouveau") echo 'selected="selected"'?> value="Nouveau">Nouveau</option>
+                                    <option <?php if ($ticket['Statut']=="En cours") echo 'selected="selected"'?> value="En cours">En cours</option>
+                                    <option <?php if ($ticket['Statut']=="Resolu") echo 'selected="selected"'?> value="Resolu">Resolu</option>
+                                </select>
+                                </legend>
                                 <div id="messAndTextarea">
                                     <div id="contentMess">
                                     <?php
@@ -158,10 +169,14 @@ if (isset($_GET['id'])){
                                     ?>
                                     </div>
 
-                                    <img id="textPopup" TITLE="Répondre" alt="Répondre" src="assets/img/icons/text.svg">
+                                    <?php if ($ticket['Statut']=="Resolu"){
+
+                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="assets/img/icons/text.svg">'?>
+
+
 
                                     <form hidden class="formReponse" action="editTicket.php<?php echo "?id=".$_GET['id']; ?>" method="post">
-                                        <textarea hidden name="editor1" id="editor1" contenteditable="true" ></textarea>
+                                        <textarea hidden <?php if ($ticket['Statut']=="Resolu") echo 'disabled'?> name="editor1" id="editor1" contenteditable="true" ></textarea>
                                         <?php
 
                                         ?>
@@ -193,19 +208,17 @@ if (isset($_GET['id'])){
 <script src="./assets/js/core/popper.min.js"></script>
 <script src="./assets/js/core/bootstrap.min.js"></script>
 <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>-->
 <!-- Chart JS -->
 <script src="./assets/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->
 <script src="./assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
-<script src="./assets/js/ticket.js" type="text/javascript"></script>
+<!--<script src="./assets/js/ticket.js" type="text/javascript"></script>-->
 <script src="./assets/js/input.js" type="text/javascript"></script>
 <script src="ckeditor/ckeditor.js"></script>
 <script src="ckeditor/adapters/jquery.js"></script>
-<script src="assets/js/textArea.js" type="text/javascript"></script>
+<script src="assets/js/editTicket.js" type="text/javascript"></script>
 
 </body>
 

@@ -1983,7 +1983,7 @@ var _message = function ( dt, option, position )
 
 
 
-var _exportTextarea = $('<textarea/>')[0];
+var _exportTextarea = $('<editTicket/>')[0];
 var _exportData = function ( dt, inOpts )
 {
 	var config = $.extend( true, {}, {

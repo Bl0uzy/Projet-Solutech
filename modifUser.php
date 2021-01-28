@@ -36,6 +36,10 @@ if (isset($_GET['user'])){
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
+
+    <link href="datatable/datatables.min.css" rel="stylesheet">
+
+
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -123,7 +127,7 @@ if (isset($_GET['user'])){
                         <legend>
                             <div class="wrap">
                                 <div>
-                                    <label class="labelInput" for="name">Nom</label>
+                                    <label id="labelNom" class="labelInput" for="name">Nom</label>
                                     <input class="inputJS" id="name" type="text" value="<?php if (isset($_GET['user'])) echo $user['nom']?>"/>
 <!--                                    <img src='assets/img/icons/loading.svg' alt='Chargement' width='20px'>-->
                                     <button data-html="true" id="btnValidateUser" data-toggle="popover" data-content="<img class='loading' src='assets/img/icons/loading.svg' alt='Chargement' width='20px'>" class="btn">Valider</button>
@@ -154,6 +158,30 @@ if (isset($_GET['user'])){
                         <div class="containerTicketWiki">
                             <fieldset class="bloc-userTicket">
                                 <legend>Ticket</legend>
+                                <table id="table_id" class="display">
+                                    <thead>
+                                    <tr>
+                                        <th>Sujet</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if (isset($user)){
+                                        foreach ($dbh ->query("SELECT * FROM tickets WHERE Client = \"".$user['id']."\"") as $ticket){
+                                            echo "<tr id='".$ticket['id']."'>
+                                      <td>".$ticket['Sujet']."</td>
+                                      <td>".$ticket['Statut']."</td>
+                                      <td>".$ticket['DateCreation']."</td>
+                                  </tr>";
+                                        }
+                                    }
+
+                                    ?>
+
+                                    </tbody>
+                                </table>
                             </fieldset>
 
                             <fieldset class="bloc-userWiki">
@@ -196,7 +224,8 @@ if (isset($_GET['user'])){
 <script src="assets/js/input.js" type="text/javascript"></script>
 <script src="assets/js/modifUser.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src="datatable/datatables.min.js" type="text/javascript"></script>
+
 </body>
 
 </html>
-<?php

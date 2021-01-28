@@ -105,3 +105,8 @@ $("#delUser").click(function () {
         }
     });
 })
+
+$("#table_id").on('click','tbody tr',function () {
+    console.log($(this).attr("id"))
+    window.location.href="editTicket.php?id="+$(this).attr("id")
+})

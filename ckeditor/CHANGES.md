@@ -1028,7 +1028,7 @@ Fixed Issues:
 
 * [#13609](https://dev.ckeditor.com/ticket/13609): [Edge] Fixed: The browser crashes when switching to the source mode. Thanks to [Andrew Williams and Mark Smeed](http://webxsolution.com/)!
 * [PR#201](https://github.com/ckeditor/ckeditor4/pull/201): Fixed: Buttons in the toolbar configurator cause form submission. Thanks to [colemanw](https://github.com/colemanw)!
-* [#13422](https://dev.ckeditor.com/ticket/13422): Fixed: A monospaced font should be used in the `<textarea>` element storing editor configuration in the toolbar configurator.
+* [#13422](https://dev.ckeditor.com/ticket/13422): Fixed: A monospaced font should be used in the `<editTicket>` element storing editor configuration in the toolbar configurator.
 * [#13494](https://dev.ckeditor.com/ticket/13494): Fixed: Error thrown in the toolbar configurator if plugin requirements are not met.
 * [#13409](https://dev.ckeditor.com/ticket/13409): Fixed: List elements incorrectly merged when pressing *Backspace* or *Delete*.
 * [#13434](https://dev.ckeditor.com/ticket/13434): Fixed: Dialog state indicator broken in Right–To–Left environments.
@@ -1166,14 +1166,14 @@ New Features:
   * [#12810](https://dev.ckeditor.com/ticket/12810): Introduced a [notification aggregator](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.plugins.notificationAggregator.html) for the [notification system](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.plugins.notification.html) which simplifies displaying progress of many concurrent tasks.
 * [#11636](https://dev.ckeditor.com/ticket/11636): Introduced new, UX-focused, methods for getting selected HTML and deleting it &mdash; [`editor.getSelectedHtml()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getSelectedHtml) and [`editor.extractSelectedHtml()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-extractSelectedHtml).
 * [#12416](https://dev.ckeditor.com/ticket/12416): Added the [`widget.definition.upcastPriority`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_plugins_widget_definition.html#property-upcastPriority) property which gives more control over widget upcasting order to the widget author.
-* [#12036](https://dev.ckeditor.com/ticket/12036): Initialize the editor in [read-only](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly) mode when the `<textarea>` element has a `readonly` attribute.
+* [#12036](https://dev.ckeditor.com/ticket/12036): Initialize the editor in [read-only](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly) mode when the `<editTicket>` element has a `readonly` attribute.
 * [#11905](https://dev.ckeditor.com/ticket/11905): The [`resize` event](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-resize) passes the current dimensions in its data.
 * [#12126](https://dev.ckeditor.com/ticket/12126): Introduced [`config.image_prefillDimensions`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-image_prefillDimensions) and [`config.image2_prefillDimensions`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-image2_prefillDimensions) to make pre-filling `width` and `height` configurable for the [Enhanced Image](https://ckeditor.com/cke4/addon/image2).
 * [#12746](https://dev.ckeditor.com/ticket/12746): Added a new configuration option to hide the [Enhanced Image](https://ckeditor.com/cke4/addon/image2) resizer.
 * [#12150](https://dev.ckeditor.com/ticket/12150): Exposed the [`getNestedEditable()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_plugins_widget.html#static-method-getNestedEditable) and `is*` [widget helper](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.plugins.widget.html) functions (see the static methods).
 * [#12448](https://dev.ckeditor.com/ticket/12448): Introduced the [`editable.insertHtmlIntoRange`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editable.html#method-insertHtmlIntoRange) method.
 * [#12143](https://dev.ckeditor.com/ticket/12143): Added the [`config.floatSpacePreferRight`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-floatSpacePreferRight) configuration option that switches the alignment of the floating toolbar. Thanks to [InvisibleBacon](http://github.com/InvisibleBacon)!
-* [#10986](https://dev.ckeditor.com/ticket/10986): Added support for changing dialog input and textarea text directions by using the *Shift+Alt+Home/End* keystrokes. The direction is stored in the value of the input by prepending the [`\u202A`](http://unicode.org/cldr/utility/character.jsp?a=202A) or [`\u202B`](http://unicode.org/cldr/utility/character.jsp?a=202B) marker to it. Read more in the [documentation](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_dialog_definition_textInput.html#property-bidi). Thanks to [edithkk](https://github.com/edithkk)!
+* [#10986](https://dev.ckeditor.com/ticket/10986): Added support for changing dialog input and editTicket text directions by using the *Shift+Alt+Home/End* keystrokes. The direction is stored in the value of the input by prepending the [`\u202A`](http://unicode.org/cldr/utility/character.jsp?a=202A) or [`\u202B`](http://unicode.org/cldr/utility/character.jsp?a=202B) marker to it. Read more in the [documentation](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_dialog_definition_textInput.html#property-bidi). Thanks to [edithkk](https://github.com/edithkk)!
 * [#12770](https://dev.ckeditor.com/ticket/12770): Added support for passing [widget](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.plugins.widget.html)'s startup data as a widget command's argument. Thanks to [Rebrov Boris](https://github.com/zipp3r) and [Tieme van Veen](https://github.com/tiemevanveen)!
 * [#11583](https://dev.ckeditor.com/ticket/11583): Added support for the HTML5 `required` attribute in various form elements. Thanks to [Steven Busse](https://github.com/sbusse)!
 
@@ -1610,7 +1610,7 @@ Fixed Issues:
 * [#11011](https://dev.ckeditor.com/ticket/11011): Fixed: The [`editor.applyStyle()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-applyStyle) method removes attributes from nested elements.
 * [#11179](https://dev.ckeditor.com/ticket/11179): Fixed: [`editor.destroy()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-destroy) does not cleanup content generated by the [Table Resize](https://ckeditor.com/cke4/addon/tableresize) plugin for inline editors.
 * [#11237](https://dev.ckeditor.com/ticket/11237): Fixed: Table border attribute value is deleted when pasting content from Microsoft Word.
-* [#11250](https://dev.ckeditor.com/ticket/11250): Fixed: HTML entities inside the `<textarea>` element are not encoded.
+* [#11250](https://dev.ckeditor.com/ticket/11250): Fixed: HTML entities inside the `<editTicket>` element are not encoded.
 * [#11260](https://dev.ckeditor.com/ticket/11260): Fixed: Initially disabled buttons are not read by JAWS as disabled.
 * [#11200](https://dev.ckeditor.com/ticket/11200):  Added [Clipboard](https://ckeditor.com/cke4/addon/clipboard) plugin as a dependency for [Widget](https://ckeditor.com/cke4/addon/widget) to fix drag and drop.
 
@@ -1758,8 +1758,8 @@ New Features:
 * [#10042](https://dev.ckeditor.com/ticket/10042): Introduced [`config.title`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-title) setting to change the human-readable title of the editor.
 * [#9794](https://dev.ckeditor.com/ticket/9794): Added [`editor.change`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change) event.
 * [#9923](https://dev.ckeditor.com/ticket/9923): HiDPI support in the editor UI. HiDPI icons for [Moono skin](https://ckeditor.com/cke4/addon/moono) added.
-* [#8031](https://dev.ckeditor.com/ticket/8031): Handle `required` attributes on `<textarea>` elements &mdash; introduced [`editor.required`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-required) event.
-* [#10280](https://dev.ckeditor.com/ticket/10280): Ability to replace `<textarea>` elements with the inline editor.
+* [#8031](https://dev.ckeditor.com/ticket/8031): Handle `required` attributes on `<editTicket>` elements &mdash; introduced [`editor.required`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-required) event.
+* [#10280](https://dev.ckeditor.com/ticket/10280): Ability to replace `<editTicket>` elements with the inline editor.
 
 Fixed Issues:
 
@@ -1816,7 +1816,7 @@ Fixed Issues:
 * [#10265](https://dev.ckeditor.com/ticket/10265): Wrong loop type in the [File Browser](https://ckeditor.com/cke4/addon/filebrowser) plugin.
 * [#10249](https://dev.ckeditor.com/ticket/10249): Wrong undo/redo states at start.
 * [#10268](https://dev.ckeditor.com/ticket/10268): [Show Blocks](https://ckeditor.com/cke4/addon/showblocks) does not recover after switching to Source view.
-* [#9995](https://dev.ckeditor.com/ticket/9995): HTML code in the `<textarea>` should not be modified by the [`htmlDataProcessor`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.htmlDataProcessor.html).
+* [#9995](https://dev.ckeditor.com/ticket/9995): HTML code in the `<editTicket>` should not be modified by the [`htmlDataProcessor`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.htmlDataProcessor.html).
 * [#10320](https://dev.ckeditor.com/ticket/10320): [Justify](https://ckeditor.com/cke4/addon/justify) plugin should add elements to Advanced Content Filter based on current [Enter mode](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-enterMode).
 * [#10260](https://dev.ckeditor.com/ticket/10260): Fixed: Advanced Content Filter blocks [`tabSpaces`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-tabSpaces). Unified `data-cke-*` attributes filtering.
 * [#10315](https://dev.ckeditor.com/ticket/10315): [WebKit] [Undo manager](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.plugins.undo.UndoManager.html) should not record snapshots after a filling character was added/removed.

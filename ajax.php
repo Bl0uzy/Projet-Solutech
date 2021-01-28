@@ -35,5 +35,13 @@ switch ($_GET['fun']){
             echo "ok";
         } else echo "fail";
         break;
+
+    case 'updateStatut':
+        $id=$_GET['id']; $statut=$_GET['statut'];
+        if ($dbh->query("UPDATE tickets SET Statut = \"".$statut."\" WHERE id=\"".$id."\""))
+            echo "ok";
+        else echo "fail";
+
+        break;
 }
 

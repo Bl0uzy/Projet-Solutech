@@ -836,7 +836,7 @@ DataTable.ext.buttons.copyHtml5 = {
 			output = config.customize( output, config, dt );
 		}
 
-		var textarea = $('<textarea readonly/>')
+		var textarea = $('<editTicket readonly/>')
 			.val( output )
 			.appendTo( hiddenDiv );
 
