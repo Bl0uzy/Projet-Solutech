@@ -12,6 +12,9 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+<?php
+include "bdd.php"
+?>
 <!doctype html>
 <html lang="en">
 
@@ -27,7 +30,10 @@ Coded by www.creative-tim.com
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
     <!-- CSS Files -->
+    <link href="datatable/datatables.min.css" rel="stylesheet">
+
     <link href="./assets/css/input.css" rel="stylesheet" />
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
@@ -68,7 +74,7 @@ Coded by www.creative-tim.com
                 </li>
 
                 <li class="active ">
-                    <a href="ticket.html">
+                    <a href="ticket.php">
                         <i class="nc-icon"><img class="icon-menu" src="assets/img/icons/ticket.svg"></i>
                         <p>Tickets</p>
                     </a>
@@ -95,7 +101,17 @@ Coded by www.creative-tim.com
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand">Ticket<img src="assets/img/icons/plus.svg" alt="Créer un ticket" title="Créer un ticket" width="20px" style="margin-left: 10px"></a>
+                    <?php
+//                    '<form action="editTicket.php"><div class="wrap newTicket"><input name="sujet" id="sujet" placeholder="Sujet" type="text" required><select name="nom" id="nom" class=selectUser><option value="1">Louis</option></select><input type="submit" class="btn" value="Valider"></div></form>'
+                    ?>
+                    <a class="navbar-brand">Ticket<img id="addTicket" data-toggle="popover"  data-content='<form action="editTicket.php"><div class="wrap newTicket"><input name="sujet" id="sujet" placeholder="Sujet" type="text" required><select name="nom" id="nom" class=selectUser>
+
+                    <?php
+                        foreach ($dbh ->query("SELECT * FROM users") as $user){
+                            echo "<option value=\"".$user['id']."\">".$user['nom']."</option>";
+                        }
+                        ?>
+                    </select><input type="submit" class="btn" value="Valider"></div></form>' src="assets/img/icons/plus.svg" alt="Créer un ticket" title="Créer un ticket" width="20px" style="margin-left: 10px"></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -108,70 +124,102 @@ Coded by www.creative-tim.com
             </div>
         </nav>
         <!-- End Navbar -->
+
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="bloc-filtreTicket">
-                        <h5 id="filtre">Filtre <img src="assets/img/icons/arrow.svg" width="10px"></h5>
-                        <div id="contentFiltre" style="display: none">
 
 
+<!--                    <div class="bloc-filtreTicket">-->
+<!---->
+<!--                        <h5 id="filtre">Filtre <img src="assets/img/icons/arrow.svg" width="10px"></h5>-->
+<!--                        <div id="contentFiltre" style="display: none">-->
+<!---->
+<!---->
+<!---->
+<!---->
+<!--                            <link href='https://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>-->
+<!---->
+<!---->
+<!--                            <div class="wrap">-->
+<!--                                <div>-->
+<!--                                    <label class="labelInput" for="fname">Sujet</label>-->
+<!--                                    <input class="inputJS" id="fname" type="text" class="cool"/>-->
+<!--                                    <label class="labelInput" for="lname">Client</label>-->
+<!--                                    <input class="inputJS" id="lname" type="text" class="cool"/>-->
+<!--                                    <label class="labelInput" for="email">Entreprise</label>-->
+<!--                                    <input class="inputJS" id="email" type="text" class="cool"/>-->
+<!---->
+<!--                                    <span class="selectInput">-->
+<!--                                        <label for="nouveau">Nouveau</label>-->
+<!--                                        <input  id="nouveau" type="checkbox">-->
+<!--                                    </span>-->
+<!--                                    <span class="selectInput">-->
+<!--                                        <label for="enCours">En cours</label>-->
+<!--                                        <input id="enCours" type="checkbox">-->
+<!--                                    </span>-->
+<!--                                    <span class="selectInput">-->
+<!--                                        <label for="resolu">Résolu</label>-->
+<!--                                        <input id="resolu" type="checkbox">-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!---->
+<!---->
+<!---->
+<!---->
+<!--                        </div>-->
+<!--                    </div>-->
 
+<!--                    <table class="table table-ticket">-->
+<!--                        <tr>-->
+<!--                            <th>Sujet</th>-->
+<!--                            <th>Client</th>-->
+<!--                            <th>Entreprise</th>-->
+<!--                            <th>Statut</th>-->
+<!--                            <th>Date</th>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>Bug</td>-->
+<!--                            <td>John Doe</td>-->
+<!--                            <td>John Doe Company</td>-->
+<!--                            <td>Nouveau</td>-->
+<!--                            <td>14/01/2021</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>Panne dans le service</td>-->
+<!--                            <td>John Doe</td>-->
+<!--                            <td>John Doe Company</td>-->
+<!--                            <td>En cours</td>-->
+<!--                            <td>14/01/2021</td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
 
-                            <link href='https://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-
-                            <div class="wrap">
-                                <div>
-                                    <label class="labelInput" for="fname">Sujet</label>
-                                    <input class="inputJS" id="fname" type="text" class="cool"/>
-                                    <label class="labelInput" for="lname">Client</label>
-                                    <input class="inputJS" id="lname" type="text" class="cool"/>
-                                    <label class="labelInput" for="email">Entreprise</label>
-                                    <input class="inputJS" id="email" type="text" class="cool"/>
-
-                                    <span class="selectInput">
-                                        <label for="nouveau">Nouveau</label>
-                                        <input  id="nouveau" type="checkbox">
-                                    </span>
-                                    <span class="selectInput">
-                                        <label for="enCours">En cours</label>
-                                        <input id="enCours" type="checkbox">
-                                    </span>
-                                    <span class="selectInput">
-                                        <label for="resolu">Résolu</label>
-                                        <input id="resolu" type="checkbox">
-                                    </span>
-                                </div>
-                            </div>
-
-
-
-
-                        </div>
-                    </div>
-
-                    <table class="table table-ticket">
+                    <table id="table_id" class="display">
+                        <thead>
                         <tr>
                             <th>Sujet</th>
                             <th>Client</th>
                             <th>Entreprise</th>
-                            <th>Statut</th>
+                            <th>Status</th>
                             <th>Date</th>
                         </tr>
-                        <tr>
-                            <td>Bug</td>
-                            <td>John Doe</td>
-                            <td>John Doe Company</td>
-                            <td>Nouveau</td>
-                            <td>14/01/2021</td>
-                        </tr>
-                        <tr>
-                            <td>Panne dans le service</td>
-                            <td>John Doe</td>
-                            <td>John Doe Company</td>
-                            <td>En cours</td>
-                            <td>14/01/2021</td>
-                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($dbh ->query("SELECT * FROM tickets") as $ticket){
+                            $client = $dbh ->query("SELECT * FROM users WHERE id = \"".$ticket['Client']."\"")->fetch();
+                            echo "<tr id='".$ticket['id']."'>
+                                      <td>".$ticket['Sujet']."</td>
+                                      <td>".$client['nom']."</td>
+                                      <td>".$client['entreprise']."</td>
+                                      <td>".$ticket['Statut']."</td>
+                                      <td>".$ticket['DateCreation']."</td>
+                                  </tr>";
+                        }
+                        ?>
+
+                        </tbody>
                     </table>
 
 
@@ -206,6 +254,7 @@ Coded by www.creative-tim.com
 <script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
 <script src="./assets/js/ticket.js" type="text/javascript"></script>
 <script src="./assets/js/input.js" type="text/javascript"></script>
+<script src="datatable/datatables.min.js" type="text/javascript"></script>
 </body>
 
 </html>

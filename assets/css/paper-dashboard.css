@@ -3347,7 +3347,7 @@ License - nucleoapp.com/license/
   .main-panel > .content {
     padding: 0 30px 30px;
     min-height: calc(100vh - px);
-    margin-top: 93px; }
+    margin-top: 80px; }
   .main-panel > .navbar {
     margin-bottom: 0; }
   .main-panel .header {
@@ -4380,4 +4380,139 @@ License - nucleoapp.com/license/
 }
 #delUser{
   cursor: pointer;
+}
+
+.popover{
+  max-width: 100%;
+}
+.selectUser{
+  padding: 10px;
+  background-color: #e5e5e5;
+  border: 1px solid #e5e5e5;
+  outline: #e5e5e5;
+}
+.newTicket div input,.newTicket div select {
+  margin-right: 10px;
+}
+
+#bloc-editTicket{
+  border: 1px solid grey;
+  height: calc(100vh - 130px);
+  border-radius: 8px;
+}
+#bloc-editTicket legend{
+  margin-left: 20px;
+  padding:0 20px;
+  width: auto;
+}
+
+#table_id tbody tr:hover{
+  background-color: grey;
+}
+
+#bloc-editTicket legend span{
+  color: grey;
+  font-size: 15px;
+  margin-left: 15px;
+}
+#bloc-editTicket input{
+  width: min-content;
+  display: inline-block;
+  font-size: 15px;
+}
+.messageTicket{
+  /*background-color: white;*/
+  width: auto;
+  max-width: calc(100% - 40px);
+  height: min-content;
+  padding: 5px;
+  border-radius: 5px;
+  width: 100%;
+  /*text-align: center;*/
+  /*position: center;*/
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-left: 5px;
+
+}
+.messageT{
+  display: inline-block;
+
+
+}
+.messRecu .messageT{
+  background-color: white;
+
+  border-radius: 5px;
+  padding: 5px;
+}
+.messEnvoyee{
+  float: right;
+  /*text-align: right;*/
+  /*background-color: #c2dde8;*/
+}
+.messEnvoyee .messageT{
+  background-color: #c2dde8;
+  float: right;
+  text-align: right;
+  border-radius: 5px;
+  padding: 5px;
+
+
+}
+.messageTicket p{
+  padding: 0;
+  margin: 0;
+  /*display: inline-block;*/
+
+}
+#contentMess{
+  /*background-color: #0b2e13;*/
+  height: 100%;
+  width: 97%;
+  max-width: 97%;
+  /*max-height: calc(100vh - 250px);*/
+  overflow: scroll;
+  float: left;
+  display: inline-block;
+}
+#contentMessLess{
+  width: 70%;
+
+  float: left;
+  /*background-color: #0b2e13;*/
+  height: 100%;
+  overflow: scroll;
+}
+#messAndTextarea{
+  height: calc(100vh - 200px);
+  /*background-color: #0c2646;*/
+}
+.formReponse{
+  float: right;
+  width: 30%;
+  height: 100%;
+  align-items: center;
+}
+#textPopup{
+  float: right;
+  width: 30px;
+  margin-top: -30px;
+}
+#textPopup:hover{
+  cursor: pointer;
+}
+#send{
+  float: right;
+  margin-right: 20px;
+}
+.test{
+  background-color: #0c2646;
+  display: contents;
+}
+.nav{
+  margin-left: 0;
+}
+.nav p{
+  line-height: 30px;
 }
