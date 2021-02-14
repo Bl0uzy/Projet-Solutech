@@ -1,5 +1,15 @@
 <?php
 include "bdd.php";
+if(isset($_GET['deco'])){
+    session_start();
+
+    if (isset($_SESSION['id']) && $_SESSION['nom']) {
+        $_SESSION = array();
+        session_unset();
+        session_destroy();
+        header('Location: index.php');
+    }
+}
 
 if (isset($_POST['mail']) && isset($_POST['pass'])){
     $user= $dbh->query('SELECT id, passw, nom FROM users WHERE mail = "'.$_POST['mail'].'"')->fetch();
@@ -10,12 +20,14 @@ if (isset($_POST['mail']) && isset($_POST['pass'])){
         $_SESSION['nom'] = $user['nom'];
 
     }
-    if (isset($_SESSION['id']) && $_SESSION['nom']){
-        if ($_SESSION['nom'] == "Admin"){
-            header('Location: dashboard.php');
-        }
-
+}
+if (isset($_SESSION['id']) && $_SESSION['nom']){
+    if ($_SESSION['nom'] == "Admin"){
+        header('Location: dashboard.php');
+    } else {
+        header('Location: user/dashboard.php');
     }
+
 }
 ?>
 

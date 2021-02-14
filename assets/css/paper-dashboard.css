@@ -4233,12 +4233,12 @@ License - nucleoapp.com/license/
   border: 1px solid lightgray;
   border-radius: 8px;
   width: 100%;
-  height: 20em;
+  height: 40vh;
   padding: 20px;
   margin-bottom: 20px;
   max-height: 100%;
 }
-.newMails legend, .user-dashboard legend,.ticket-dashboard legend{
+.newMails legend, .user-dashboard legend,.ticket-dashboard legend,.wiki-dashboard legend{
   margin-bottom: 0px;
   margin-left: 16px;
   margin-right: 0;
@@ -4247,10 +4247,13 @@ License - nucleoapp.com/license/
   font-size: 20px;
   color: gray;
 }
-.newMails legend a, .user-dashboard legend a,.ticket-dashboard legend a{
+.newMails legend a, .user-dashboard legend a,.ticket-dashboard legend a, .wiki-dashboard legend a{
   text-decoration: none;
   color: gray;
+}
 
+body{
+  overflow: hidden;
 }
 
 .user-dashboard{
@@ -4258,9 +4261,20 @@ License - nucleoapp.com/license/
   border: 1px solid lightgray;
   border-radius: 8px;
   width: 47%;
-  height: 20em;
+  height: 40vh;
   padding: 20px;
   max-height: 100%;
+  overflow: auto;
+
+}
+.wiki-dashboard{
+  float: left;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  width: 47%;
+  height: calc(100vh - 110px);
+  padding: 20px;
+  overflow: auto;
 
 }
 
@@ -4269,11 +4283,16 @@ License - nucleoapp.com/license/
   border: 1px solid lightgray;
   border-radius: 8px;
   width: 50%;
-  height: 20em;
+  height: 40vh;
   padding: 20px;
   max-height: 100%;
+  overflow: auto;
 }
 
+.widthTicketDashboardUser{
+  height: calc(100vh - 110px);
+
+}
 .user-List td{
   padding-top: 10px;
   width: 100vw;
@@ -4363,6 +4382,7 @@ padding-top: 10px;
   border-radius: 8px;
   width: 45%;
   height: calc(100vh - 300px);
+  overflow: auto;
 }
 
 .bloc-userWiki{
@@ -4371,6 +4391,8 @@ padding-top: 10px;
   border-radius: 8px;
   width: 45%;
   height: calc(100vh - 300px);
+  overflow: auto;
+
 }
 
 .loading{
@@ -4383,8 +4405,7 @@ padding-top: 10px;
 .btnUtilisateur:hover{
   background-color: grey;
   cursor: pointer;
-  text-align: center;
-  text-anchor: middle;
+
 }
 .btnUtilisateur td{
   padding-bottom: 10px;
@@ -4417,7 +4438,7 @@ padding-top: 10px;
   width: auto;
 }
 
-#table_id tbody tr:hover{
+#table_id tbody tr:hover,#usersDashboard tbody tr:hover,#mailsSupport tbody tr:hover{
   background-color: grey;
 }
 
@@ -4432,8 +4453,6 @@ padding-top: 10px;
   font-size: 15px;
 }
 .messageTicket{
-  /*background-color: white;*/
-  width: auto;
   max-width: calc(100% - 40px);
   height: min-content;
   padding: 5px;
@@ -4448,8 +4467,6 @@ padding-top: 10px;
 }
 .messageT{
   display: inline-block;
-
-
 }
 .messRecu .messageT{
   background-color: white;
@@ -4463,7 +4480,8 @@ padding-top: 10px;
   /*background-color: #c2dde8;*/
 }
 .messEnvoyee .messageT{
-  background-color: #c2dde8;
+  background-color: #34495e;
+  color: whitesmoke;
   float: right;
   text-align: right;
   border-radius: 5px;
@@ -4478,25 +4496,28 @@ padding-top: 10px;
 
 }
 #contentMess{
-  /*background-color: #0b2e13;*/
+  background: linear-gradient(#f4f3ef, #d7dcdd);
   height: 100%;
-  width: 97%;
-  max-width: 97%;
+  width: 100%;
+  /*max-width: 97%;*/
   /*max-height: calc(100vh - 250px);*/
   overflow: scroll;
   float: left;
+  overflow-x: hidden;
+  border-radius: 8px;
   display: inline-block;
 }
 #contentMessLess{
   width: 70%;
-
+  background: linear-gradient(#f4f3ef, #d7dcdd);
   float: left;
   /*background-color: #0b2e13;*/
   height: 100%;
   overflow: scroll;
+  overflow-x: hidden;
 }
 #messAndTextarea{
-  height: calc(100vh - 200px);
+  height: calc(100vh - 184px);
   /*background-color: #0c2646;*/
 }
 .formReponse{
@@ -4506,12 +4527,19 @@ padding-top: 10px;
   align-items: center;
 }
 #textPopup{
+  position: relative;
   float: right;
-  width: 30px;
-  margin-top: -30px;
+  width: 40px;
+  margin-top: -50px;
+  margin-right: 10px;
+  padding: 7px;
+  background-color: white;
+  border: solid 1px lightgray;
+  border-radius: 5px;
 }
 #textPopup:hover{
   cursor: pointer;
+  background-color: #dddcdc;
 }
 #send{
   float: right;
@@ -4526,4 +4554,43 @@ padding-top: 10px;
 }
 .nav p{
   line-height: 30px;
+}
+#deconnexion{
+  margin-left: 20px
+}
+.ticket-dashboard #table_id_wrapper,#usersDashboard,#mailsSupport{
+  margin-top: -10px;
+}
+
+#header{
+  display: flex;
+  margin-bottom: 20px;
+
+}
+#mailSupportSujet{
+  margin-right: 20px;
+}
+#mailSupportSujet span,#mailSupportExpediteur span{
+  font-weight: bold;
+}
+#optionMailSupport{
+  margin: 20px;
+  display: flex;
+}
+#MSallUsers, #MSallTicket{
+  margin-right: 20px;
+  width: min-content;
+}
+#MSnewTicket{
+  width: 300px;
+}
+div.dt-searchPane div.dataTables_length{
+  float: none;
+  text-align: center;
+}
+.Oui td{
+  font-weight: bold;
+}
+.wrong{
+  border: solid 2px red;
 }

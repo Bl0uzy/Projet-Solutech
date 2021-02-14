@@ -196,3 +196,22 @@ function hexToRGB(hex, alpha) {
     return "rgb(" + r + ", " + g + ", " + b + ")";
   }
 }
+
+var absolutPath ;
+$("#imgDeco").hover(function (){
+  absolutPath = $("#imgDeco").prop("src")
+  var fichier= absolutPath.substring(absolutPath.lastIndexOf("/"),absolutPath.length)
+  var path = absolutPath.substring(0,absolutPath.lastIndexOf("/"))
+  if (fichier =="/power-button.svg"){
+    $(this).attr("src",path+"/power-button-hover.svg")
+  }
+  console.log(fichier)
+  console.log(path)
+})
+$("#imgDeco").mouseleave(function () {
+  var fichier= absolutPath.substring(absolutPath.lastIndexOf("/"),absolutPath.length)
+  var path = absolutPath.substring(0,absolutPath.lastIndexOf("/"))
+  if (fichier =="/power-button-hover.svg"){
+    $(this).attr("src",path+"/power-button.svg")
+  }
+})

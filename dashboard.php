@@ -20,6 +20,19 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
 
     } else header('Location: index.php');
 } else header('Location: index.php');
+
+function afficherUsers($dbh){
+
+    foreach ($dbh -> query('SELECT * FROM users') as $user){
+        if ($user['nom'] != "Admin") {
+            echo "<tr id='", $user['id'], "'>";
+            echo "<td>", $user['nom'], "</td>";
+            echo "<td>", $user['entreprise'], "</td>";
+//        echo "<td><img src='assets/img/icons/settings.svg' width='20px'></td>";
+            echo "</tr>";
+        }
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -34,6 +47,9 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
+
+    <link href="datatable/datatables.min.css" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
@@ -111,7 +127,8 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    Nom de l'utilisateur
+                    <?php  echo $_SESSION['nom'] ?>
+                    <a id="deconnexion" href="index.php?deco="><img id="imgDeco" src="assets/img/icons/power-button.svg" width="30px" alt="Deconnexion" title="Deconnexion"></a>
                 </div>
             </div>
         </nav>
@@ -122,14 +139,81 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
 
                     <fieldset class="newMails">
                         <legend><a href="#">Mails à verifier</a></legend>
+                        <table id="mailsSupport" class="display">
+                            <thead>
+                            <tr>
+                                <th>Object</th>
+                                <th>Expediteur</th>
+                                <th>Date de reception</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                                foreach($dbh->query("SELECT * FROM mailsupport")as $mail){
+                                    echo "<tr id=".$mail['id'].">
+                                              <td>".$mail['object']."</td>
+                                              <td>".$mail['expediteur']."</td>
+                                              <td>".$mail['date']."</td>
+                                          </tr>";
+                                }
+                            ?>
+
+                            </tbody>
+                        </table>
+
                     </fieldset>
 
                     <fieldset class="user-dashboard">
                         <legend><a href="utilisateur.php">Utilisateurs</a></legend>
+                        <table id="usersDashboard" class="">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Entreprise</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                                afficherUsers($dbh);
+                            ?>
+
+                            </tbody>
+                        </table>
                     </fieldset>
 
                     <fieldset class="ticket-dashboard">
-                        <legend><a href="ticket.php">Ticket</a></legend>
+                        <legend><a href="ticket.php">Ticket en attente de réponse</a></legend>
+                        <table id="table_id" class="display">
+                            <thead>
+                            <tr>
+                                <th>Sujet</th>
+                                <th>Client</th>
+                                <th>Statut</th>
+                                <th>Derniere modification</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            $Clients = $dbh->query("SELECT nom,id FROM users")->fetchAll();
+                            foreach ($dbh ->query("SELECT * FROM tickets WHERE nouveauMessage = \"1\"") as $ticket){
+                                $nomClient="";
+                                foreach ($Clients as $client){
+                                    if ($client['id'] == $ticket['Client']){
+                                        $nomClient = $client['nom'];
+                                    }
+                                }
+                                echo "<tr id='".$ticket['id']."'>
+                                  <td>".$ticket['Sujet']."</td>
+                                  <td>".$nomClient."</td>
+                                  <td>".$ticket['Statut']."</td>
+                                  <td>".$ticket['derniereModif']."</td>
+                              </tr>";
+                            }
+
+                            ?>
+
+                            </tbody>
+                        </table>
                     </fieldset>
 
                 </div>
@@ -161,6 +245,9 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
 <script src="./assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
+<script src="./assets/js/dashboard.js" type="text/javascript"></script>
+<script src="datatable/datatables.min.js" type="text/javascript"></script>
+
 </body>
 
 </html>

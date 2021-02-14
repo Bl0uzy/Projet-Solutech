@@ -13,46 +13,47 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <?php
-require "bdd.php";
+require "../bdd.php";
 date_default_timezone_set('Europe/Paris');
-session_start();
-if (isset($_SESSION['id']) && $_SESSION['nom']){
-    if ($_SESSION['nom'] == "Admin"){
 
-    } else header('Location: index.php');
-} else header('Location: index.php');
+session_start();
+//if (isset($_SESSION['id']) && $_SESSION['nom']){
+//    if ($_SESSION['nom'] == "Admin"){
+//
+//    } else header('Location: index.php');
+//} else header('Location: index.php');
 
 if (isset($_GET['sujet'])){
     $sujet = $_GET['sujet'];
-    $nomClient = $_GET['nom'];
+    $idClient = $_SESSION['id'];
     $statut = "Nouveau";
     $date = date("Y-m-d");
     $derniereModif = date("Y-m-d H:i:s");
 
-    $dbh->query("INSERT INTO tickets(Sujet,Client,Statut,DateCreation,derniereModif,nouveauMessage) VALUES (\"$sujet\",\"$nomClient\",\"$statut\",\"$date\",\"$derniereModif\",\"0\")");
+    $dbh->query("INSERT INTO tickets(Sujet,Client,Statut,DateCreation,derniereModif,nouveauMessage) VALUES (\"$sujet\",\"$idClient\",\"$statut\",\"$date\",\"$derniereModif\",\"0\")");
 //                        echo $dbh->lastInsertId();
     header('Location: editTicket.php?id='.$dbh->lastInsertId());
+} else{
+    if (isset($_GET['id'])){
+        $ticket = $dbh->query("SELECT * FROM tickets WHERE id = \"".$_GET['id']."\"")->fetch();
+        $client = $dbh->query("SELECT * FROM users WHERE id =\"".$ticket['Client']."\"")->fetch();
+    }else{
+        header('Location: ticket.php');
+    }
 }
 
-if (isset($_GET['id'])){
-    $ticket = $dbh->query("SELECT * FROM tickets WHERE id = \"".$_GET['id']."\"")->fetch();
-    $client = $dbh->query("SELECT * FROM users WHERE id =\"".$ticket['Client']."\"")->fetch();
-}else{
-    header('Location: ticket.php');
-}
+
 if (isset($_POST['editor1'])){
     $derniereModif = date("Y-m-d H:i:s");
-    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".$_POST['editor1']."\",\"".$_GET['id']."\","."0".",\"$derniereModif\")");
+
+    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".$_POST['editor1']."\",\"".$_GET['id']."\",".$_SESSION['id'].",\"$derniereModif\")");
     $dbh->query("UPDATE tickets SET derniereModif=\"".$derniereModif."\" WHERE id = \"".$ticket['id']."\"");
 
-    if ($ticket['nouveauMessage'] == 1){
-        $dbh ->query("UPDATE tickets SET nouveauMessage=0 WHERE id = \"".$ticket['id']."\"");
+    if ($ticket['nouveauMessage'] == 0){
+        $dbh ->query("UPDATE tickets SET nouveauMessage=1 WHERE id = \"".$ticket['id']."\"");
     }
-
     $statut = $ticket["Statut"];
-    if ($statut == "Nouveau"){
-        $dbh->query("UPDATE tickets SET Statut = \"En cours\" WHERE id = \"".$_GET['id']."\"");
-    }
+
     header('Location: editTicket.php?id='.$_GET['id']);
 
 }
@@ -62,8 +63,8 @@ if (isset($_POST['editor1'])){
 
 <head>
     <meta charset="utf-8" />
-    <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
         Paper Dashboard 2 by Creative Tim
@@ -73,10 +74,10 @@ if (isset($_POST['editor1'])){
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
-    <link href="./assets/css/input.css" rel="stylesheet" />
-    <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
-<!--    <script src="CKEditor/build/ckeditor.js"></script>-->
+    <link href="../assets/css/input.css" rel="stylesheet" />
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <!--    <script src="CKEditor/build/ckeditor.js"></script>-->
 
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -95,7 +96,7 @@ if (isset($_POST['editor1'])){
             <!--        </a>-->
             <a href="https://www.creative-tim.com" class="simple-text logo-normal">
                 <div class="logo-image-big">
-                    <img src="assets/img/logo-bannière.png">
+                    <img src="../assets/img/logo-bannière.png">
                 </div>
             </a>
         </div>
@@ -108,16 +109,9 @@ if (isset($_POST['editor1'])){
                     </a>
                 </li>
 
-                <li>
-                    <a href="utilisateur.php">
-                        <i class="nc-icon nc-badge"></i>
-                        <p>Utilisateurs</p>
-                    </a>
-                </li>
-
                 <li class="active ">
                     <a href="ticket.php">
-                        <i class="nc-icon"><img class="icon-menu" src="assets/img/icons/ticket.svg"></i>
+                        <i class="nc-icon"><img class="icon-menu" src="../assets/img/icons/ticket.svg"></i>
                         <p>Tickets</p>
                     </a>
                 </li>
@@ -151,8 +145,7 @@ if (isset($_POST['editor1'])){
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    <?php  echo $_SESSION['nom'] ?>
-                    <a id="deconnexion" href="index.php?deco="><img id="imgDeco" src="assets/img/icons/power-button.svg" width="30px" alt="Deconnexion" title="Deconnexion"></a>
+                    Nom de l'utilisateur
                 </div>
             </div>
         </nav>
@@ -165,47 +158,42 @@ if (isset($_POST['editor1'])){
                     <div class="wrap">
                         <div>
                             <fieldset id="bloc-editTicket">
-                                <legend><input type="text" disabled value="<?php if (isset($_GET['id'])){ echo $ticket['Sujet']; }else echo "erreur" ?>"><span><?php if (isset($_GET['id'])){ echo $client['nom']; }?></span>
-                                <select id="selectStatut">
-                                    <option <?php if ($ticket['Statut']=="Nouveau") echo 'selected="selected"'?> value="Nouveau">Nouveau</option>
-                                    <option <?php if ($ticket['Statut']=="En cours") echo 'selected="selected"'?> value="En cours">En cours</option>
-                                    <option <?php if ($ticket['Statut']=="Resolu") echo 'selected="selected"'?> value="Resolu">Resolu</option>
-                                </select>
+                                <legend><input type="text" disabled value="<?php if (isset($_GET['id'])){ echo $ticket['Sujet']; }else echo "erreur" ?>">
+                                    <select disabled id="selectStatut">
+                                        <option <?php if ($ticket['Statut']=="Nouveau") echo 'selected="selected"'?> value="Nouveau">Nouveau</option>
+                                        <option <?php if ($ticket['Statut']=="En cours") echo 'selected="selected"'?> value="En cours">En cours</option>
+                                        <option <?php if ($ticket['Statut']=="Resolu") echo 'selected="selected"'?> value="Resolu">Resolu</option>
+                                    </select>
                                 </legend>
                                 <div id="messAndTextarea">
                                     <?php if ($ticket['Statut']=="Resolu"){
 
-                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="assets/img/icons/text.svg">'?>
+                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="../assets/img/icons/text.svg">'?>
                                     <div id="contentMess">
-                                    <?php
+                                        <?php
                                         foreach ($dbh->query("SELECT * FROM messagesticket WHERE idTicket =\"".$_GET['id']."\"") as $message){
                                             echo "<div class='messageTicket ";
-                                            if ($message['idUser']==0) {
+                                            if ($message['idUser']==$_SESSION['id']) {
                                                 echo "messEnvoyee";
                                             }else {
                                                 echo "messRecu";
                                             }
                                             echo "'><div class='messageT'>".$message['message']."</div></div>";
                                         }
-                                    ?>
+                                        ?>
                                     </div>
-
-
 
 
 
                                     <form hidden class="formReponse" action="editTicket.php<?php echo "?id=".$_GET['id']; ?>" method="post">
                                         <textarea hidden <?php if ($ticket['Statut']=="Resolu") echo 'disabled'?> name="editor1" id="editor1" contenteditable="true" ></textarea>
-                                        <?php
 
-                                        ?>
                                         <button type="submit" class="btn" id="send">Envoyer</button>
                                     </form>
                                 </div>
                             </fieldset>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -223,21 +211,21 @@ if (isset($_POST['editor1'])){
     </div>
 </div>
 <!--   Core JS Files   -->
-<script src="./assets/js/core/jquery.min.js"></script>
-<script src="./assets/js/core/popper.min.js"></script>
-<script src="./assets/js/core/bootstrap.min.js"></script>
-<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script src="../assets/js/core/jquery.min.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+<script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Chart JS -->
-<script src="./assets/js/plugins/chartjs.min.js"></script>
+<script src="../assets/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->
-<script src="./assets/js/plugins/bootstrap-notify.js"></script>
+<script src="../assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
+<script src="../assets/js/paper-dashboard.js" type="text/javascript"></script>
 <!--<script src="./assets/js/ticket.js" type="text/javascript"></script>-->
-<script src="./assets/js/input.js" type="text/javascript"></script>
-<script src="ckeditor/ckeditor.js"></script>
-<script src="ckeditor/adapters/jquery.js"></script>
-<script src="assets/js/editTicket.js" type="text/javascript"></script>
+<script src="../assets/js/input.js" type="text/javascript"></script>
+<script src="../ckeditor/ckeditor.js"></script>
+<script src="../ckeditor/adapters/jquery.js"></script>
+<script src="../assets/js/editTicket.js" type="text/javascript"></script>
 
 </body>
 

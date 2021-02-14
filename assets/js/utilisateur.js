@@ -3,3 +3,10 @@ $(".btnUtilisateur").click(function () {
     console.log(id)
     window.location.href="modifUser.php?user="+id;
 })
+
+$(document).ready(function () {
+    $("#usersTable").DataTable({
+        paging: false,
+        info: false
+    })
+})

@@ -13,18 +13,18 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <?php
-include "bdd.php";
-
+require "bdd.php";
 session_start();
 if (isset($_SESSION['id']) && $_SESSION['nom']){
     if ($_SESSION['nom'] == "Admin"){
 
     } else header('Location: index.php');
 } else header('Location: index.php');
-
-if (isset($_GET['user'])){
-    $id = $_GET['user'];
-    $user = $dbh->query("SELECT * FROM users WHERE id = '$id'")->fetch();
+if (isset($_GET['id'])){
+    $mail = $dbh ->query("SELECT * FROM mailsupport WHERE id = \"".$_GET['id']."\"")->fetch();
+    $users = $dbh ->query("SELECT * FROM users");
+} else {
+    header('Location: dashboard.php');
 }
 ?>
 <!doctype html>
@@ -36,23 +36,22 @@ if (isset($_GET['user'])){
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Utilisateurs
+        Mail Support
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
-    <link href="assets/css/input.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <!-- CSS Files -->
 
     <link href="datatable/datatables.min.css" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <!-- CSS Files -->
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!--  <link href="./assets/demo/demo.css" rel="stylesheet" />-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 </head>
 
 <body class="">
@@ -73,14 +72,14 @@ if (isset($_GET['user'])){
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li>
+                <li class="active ">
                     <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
 
-                <li class="active ">
+                <li>
                     <a href="utilisateur.php">
                         <i class="nc-icon nc-badge"></i>
                         <p>Utilisateurs</p>
@@ -103,7 +102,7 @@ if (isset($_GET['user'])){
             </ul>
         </div>
     </div>
-    <div class="main-panel" style="height: 100vh;">
+    <div class="main-panel">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
             <div class="container-fluid">
@@ -115,7 +114,7 @@ if (isset($_GET['user'])){
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand">Utilisateurs</a>
+                    <a class="navbar-brand" >Mail support</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -132,74 +131,37 @@ if (isset($_GET['user'])){
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <fieldset class="bloc-user">
-                        <legend>
-                            <div class="wrap">
-                                <div>
-                                    <label id="labelNom" class="labelInput" for="name">Nom</label>
-                                    <input class="inputJS" id="name" type="text" value="<?php if (isset($_GET['user'])) echo $user['nom']?>"/>
-<!--                                    <img src='assets/img/icons/loading.svg' alt='Chargement' width='20px'>-->
-                                    <button data-html="true" id="btnValidateUser" data-toggle="popover" data-content="<img class='loading' src='assets/img/icons/loading.svg' alt='Chargement' width='20px'>" class="btn">Valider</button>
-                                    <?php if (isset($_GET['user'])) echo '<img id="delUser" src="assets/img/icons/remove.svg" alt="Supprimer l\'utilisateur" title="Supprimer l\'utilisateur" width="45px">' ?>
-                                </div>
-                            </div>
-                        </legend>
-
-                        <div class="wrap infoUser">
-                            <div>
-                                <span>
-                                    <label class="labelInput" for="entreprise">Entreprise</label>
-                                    <input class="inputJS" id="entreprise" type="text" value="<?php if (isset($_GET['user'])) echo $user['entreprise']?>"/>
-                                </span>
-
-                                <span>
-                                    <label class="labelInput" for="mail"> Email</label>
-                                    <input class="inputJS" id="mail" type="email" value="<?php if (isset($_GET['user'])) echo $user['mail']?>"/>
-                                </span>
-
-                                <span>
-                                    <label class="labelInput" for="passw">Mot de passe</label>
-                                    <input class="inputJS" id="passw" type="password" />
-                                </span>
-                            </div>
+                    <div id="error"></div>
+                    <div id="contentMailSupport">
+                        <div id="header">
+                            <div id="mailSupportSujet">Objet : <span><?php echo $mail['object']?></span></div>
+                            <div id="mailSupportExpediteur">De : <span><?php echo $mail['expediteur']?></span></div>
                         </div>
-
-                        <div class="containerTicketWiki">
-                            <fieldset class="bloc-userTicket">
-                                <legend>Ticket</legend>
-                                <table id="table_id" class="display">
-                                    <thead>
-                                    <tr>
-                                        <th>Sujet</th>
-                                        <th>Statut</th>
-                                        <th>Date</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                    if (isset($user)){
-                                        foreach ($dbh ->query("SELECT * FROM tickets WHERE Client = \"".$user['id']."\"") as $ticket){
-                                            echo "<tr id='".$ticket['id']."'>
-                                      <td>".$ticket['Sujet']."</td>
-                                      <td>".$ticket['Statut']."</td>
-                                      <td>".$ticket['DateCreation']."</td>
-                                  </tr>";
-                                        }
-                                    }
-
-                                    ?>
-
-                                    </tbody>
-                                </table>
-                            </fieldset>
-
-                            <fieldset class="bloc-userWiki">
-                                <legend>Wiki</legend>
-                            </fieldset>
+                        <div id="mailSupportText">
+                            <textarea name="editor1" id="editor1" contenteditable="true" ><?php echo $mail['content']?></textarea>
                         </div>
+                    </div>
 
-                    </fieldset>
+                    <div id="optionMailSupport">
+                        <select id="MSallUsers" >
+                            <option value="0">- Utilisateur -</option>
+                            <?php
+                            foreach ($users as $user){
+                                if ($user['nom'] != 'Admin'){
+                                    echo "<option value='".$user['id']."'>".$user['nom']."</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                        <select hidden id="MSallTicket" >
+                            <option value="0">- Ticket -</option>
+                            <option value="new">- Nouveau ticket -</option>
+                        </select>
+                        <input hidden id="MSnewTicket"  type="text" placeholder="Sujet du ticket" >
+                    </div>
 
+                    <button id="dellMail" class="btn btn-danger">Effacer le mail</button>
+                    <button id="validateMail" class="btn">Valider</button>
 
                 </div>
             </div>
@@ -230,11 +192,16 @@ if (isset($_GET['user'])){
 <script src="./assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
-<script src="assets/js/input.js" type="text/javascript"></script>
-<script src="assets/js/modifUser.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src="ckeditor/ckeditor.js"></script>
+<script src="ckeditor/adapters/jquery.js"></script>
+
+<script src="./assets/js/mailSupport.js" type="text/javascript"></script>
 <script src="datatable/datatables.min.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 
 </body>
 
 </html>
+
