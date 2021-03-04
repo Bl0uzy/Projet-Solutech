@@ -67,7 +67,23 @@ if (isset($_GET['fun'])){
             echo $dbh->lastInsertId();
 
             break;
+
+        case 'delWiki':
+            $wikiId = $_GET['id'];
+            $path = "./piecesJointes/".$wikiId."/";
+            print_r($dbh->query("DELETE FROM user_wiki_access WHERE wiki_id = \"".$wikiId."\""));
+
+            $scandir = scandir("./piecesJointes/".$_GET['id']."/");
+            foreach($scandir as $fichier){
+                if ($fichier != ".." && $fichier!="."){
+                    echo unlink($path.$fichier);
+                }
+            }
+            if (rmdir($path)){
+                $dbh -> query("DELETE FROM wiki WHERE id = \"".$wikiId."\"");
+            } else echo "echec";
     }
+
 }
 
 if (isset($_POST['fun'])){
@@ -84,6 +100,13 @@ if (isset($_POST['fun'])){
                 $dbh->query("UPDATE tickets SET nouveauMessage = 1,derniereModif= \"".$date."\" WHERE id = \"".$idTicket."\"");
                 $dbh->query("DELETE FROM mailsupport WHERE id = \"".$idMail."\"");
             }
+
+            break;
+
+        case 'updateTextWiki':
+            $id = $_POST['id'];
+            $content = $_POST['content'];
+            $dbh ->query("UPDATE wiki SET content =\"".$content."\" WHERE id  = \"".$id."\"");
 
             break;
     }

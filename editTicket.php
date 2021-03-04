@@ -66,7 +66,7 @@ if (isset($_POST['editor1'])){
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Paper Dashboard 2 by Creative Tim
+        <?php $ticket['Sujet'] ?>
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -123,7 +123,7 @@ if (isset($_POST['editor1'])){
                 </li>
 
                 <li>
-                    <a href="wiki.html">
+                    <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
                     </a>
@@ -173,9 +173,9 @@ if (isset($_POST['editor1'])){
                                 </select>
                                 </legend>
                                 <div id="messAndTextarea">
-                                    <?php if ($ticket['Statut']=="Resolu"){
-
-                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="assets/img/icons/text.svg">'?>
+<!--                                    --><?php //if ($ticket['Statut']=="Resolu"){
+//
+//                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="assets/img/icons/text.svg">'?>
                                     <div id="contentMess">
                                     <?php
                                         foreach ($dbh->query("SELECT * FROM messagesticket WHERE idTicket =\"".$_GET['id']."\"") as $message){
@@ -190,18 +190,29 @@ if (isset($_POST['editor1'])){
                                     ?>
                                     </div>
 
+                                    <div <?php if ($ticket['Statut']=="Resolu") echo 'hidden'?> id="inputMess">
+                                        <form  class="formRponse" action="editTicket.php<?php echo "?id=".$_GET['id']; ?>" method="post">
+                                            <div id="divTextarea">
+                                                <textarea <?php if ($ticket['Statut']=="Resolu") echo 'disabled'?> name="editor1" id="editor1" placeholder="Ecriver votre message ici." contenteditable="true" ></textarea>
+                                                <span>
+                                                    <button type="submit" class="btn" id="send">Envoyer</button>
+                                                </span>
+                                            </div>
+
+                                        </form>
+                                    </div>
 
 
 
-
-                                    <form hidden class="formReponse" action="editTicket.php<?php echo "?id=".$_GET['id']; ?>" method="post">
-                                        <textarea hidden <?php if ($ticket['Statut']=="Resolu") echo 'disabled'?> name="editor1" id="editor1" contenteditable="true" ></textarea>
+<!--                                    <form hidden class="formReponse" action="editTicket.php--><?php //echo "?id=".$_GET['id']; ?><!--" method="post">-->
+<!--                                        <textarea hidden --><?php //if ($ticket['Statut']=="Resolu") echo 'disabled'?><!-- name="editor1" id="editor1" contenteditable="true" ></textarea>-->
                                         <?php
 
                                         ?>
-                                        <button type="submit" class="btn" id="send">Envoyer</button>
-                                    </form>
+<!--                                        <button type="submit" class="btn" id="send">Envoyer</button>-->
+<!--                                    </form>-->
                                 </div>
+
                             </fieldset>
                         </div>
                     </div>

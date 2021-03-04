@@ -13,30 +13,24 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <?php
+//require "upload.php"
 require "bdd.php";
+date_default_timezone_set('Europe/Paris');
 
-session_start();
-if (isset($_SESSION['id']) && $_SESSION['nom']){
-    if ($_SESSION['nom'] == "Admin"){
-
-    } else header('Location: index.php');
-} else header('Location: index.php');
-
-function afficherUsers($dbh){
-    foreach ($dbh -> query('SELECT * FROM users') as $user){
-
-        echo "<tr id='",$user['id'],"' class='btnUtilisateur'>";
-        echo "<td>",$user['nom'],"</td>";
-        echo "<td>",$user['entreprise'],"</td>";
-        echo "<td>",$user['mail'],"</td>";
-//        echo "<td><img src='assets/img/icons/settings.svg' width='20px'></td>";
-        echo "</tr>";
-
-    }
+if (isset($_GET['titre'])){
+    echo 'fdsqfsdqgrerqfdsqfdqfqdfqds';
+    $dbh->query("INSERT INTO wiki(titre,date,content) VALUES (\"".$_GET['titre']."\",\"".date('Y-m-d H:i:s')."\",'')");
+    header('Location: editWiki.php?id='.$dbh->lastInsertId());
 }
+if (isset($_GET['id'])){
+    $wikiDetails = $dbh->query("SELECT * FROM wiki WHERE id=\"".$_GET['id']."\"");
+    if ($wikiDetails -> rowCount() == 0){
+        header('Location: wiki.php');
+    } else $wikiDetails = $wikiDetails ->fetch();
+} else header('Location: wiki.php');
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
@@ -44,18 +38,20 @@ function afficherUsers($dbh){
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Utilisateurs
+        Wiki
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
-    <link href="datatable/datatables.min.css" rel="stylesheet">
-
-    <link href="assets/css/input.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+
+    <link href="assets/dropzone-5.7.0/dist/dropzone.css" rel="stylesheet"/>
+    <script src="./assets/dropzone-5.7.0/dist/dropzone.js"></script>
+
+
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!--  <link href="./assets/demo/demo.css" rel="stylesheet" />-->
 </head>
@@ -85,7 +81,7 @@ function afficherUsers($dbh){
                     </a>
                 </li>
 
-                <li class="active ">
+                <li>
                     <a href="utilisateur.php">
                         <i class="nc-icon nc-badge"></i>
                         <p>Utilisateurs</p>
@@ -99,7 +95,7 @@ function afficherUsers($dbh){
                     </a>
                 </li>
 
-                <li>
+                <li class="active ">
                     <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
@@ -120,7 +116,7 @@ function afficherUsers($dbh){
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand">Utilisateurs</a><a href="modifUser.php"><img src="assets/img/icons/plus.svg" width="20px"></a>
+                    <a class="navbar-brand">Wiki</a><a href="modifWiki.php"></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -128,29 +124,62 @@ function afficherUsers($dbh){
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    <?php  echo $_SESSION['nom'] ?>
-                    <a id="deconnexion" href="index.php?deco="><img id="imgDeco" src="assets/img/icons/power-button.svg" width="30px" alt="Deconnexion" title="Deconnexion"></a>                </div>
+                    Nom de l'utilisateur
+                </div>
             </div>
         </nav>
         <!-- End Navbar -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pièces jointes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="upload-widget" method="post" class="dropzone" name="image">
+                        </form>
+                        <hr>
+                        <p>Affichage des fichiers</p>
+                        <?php
+                        if (is_dir("./piecesJointes/".$_GET['id']."/")){
+                            $scandir = scandir("./piecesJointes/".$_GET['id']."/");
+
+                            foreach($scandir as $fichier){
+                                if ($fichier != ".." && $fichier!="."){
+                                    echo "$fichier<br/>";
+
+                                }
+                            }
+                        }
+
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                        <table id="usersTable" class="">
-                            <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Entreprise</th>
-                                <th>Adresse mail</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            afficherUsers($dbh);
-                            ?>
+                    <div id="topSideWiki">
+                        <input type="text" disabled value="<?php echo $wikiDetails['titre']?>">
+                        <button class="btn">Ajouter un/des utilisateur(s)</button>
+                        <button id="saveChanges" class="btn">Enregistrer les modifications </button>
+                        <button id="delWiki" class="btn">Supprimer </button>
 
-                            </tbody>
-                        </table>
+                        <a data-toggle="modal" data-target="#exampleModal"><img src="assets/img/icons/attach.svg" width="40px"></a>
+                    </div>
+                    <div id="textareaWikiContent">
+                        <textarea name="editor1" id="editor1" placeholder="Ecriver votre message ici." contenteditable="true" ><?php echo $wikiDetails['content'] ?></textarea>
+                    </div>
+
 
                 </div>
             </div>
@@ -172,6 +201,8 @@ function afficherUsers($dbh){
 <script src="./assets/js/core/jquery.min.js"></script>
 <script src="./assets/js/core/popper.min.js"></script>
 <script src="./assets/js/core/bootstrap.min.js"></script>
+
+
 <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!--  Google Maps Plugin    -->
 <!--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>-->
@@ -181,9 +212,13 @@ function afficherUsers($dbh){
 <script src="./assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
-<script src="assets/js/input.js" type="text/javascript"></script>
-<script src="assets/js/utilisateur.js" type="text/javascript"></script>
-<script src="datatable/datatables.min.js" type="text/javascript"></script>
+
+
+<script src="ckeditor/ckeditor.js"></script>
+<script src="ckeditor/adapters/jquery.js"></script>
+
+<script src="assets/js/editWiki.js"></script>
+
 
 </body>
 

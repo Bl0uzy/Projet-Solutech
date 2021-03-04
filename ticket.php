@@ -92,7 +92,7 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
                 </li>
 
                 <li>
-                    <a href="wiki.html">
+                    <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
                     </a>

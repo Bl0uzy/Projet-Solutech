@@ -4517,7 +4517,10 @@ padding-top: 10px;
   overflow-x: hidden;
 }
 #messAndTextarea{
-  height: calc(100vh - 184px);
+  /*height: calc(100vh - 184px);*/
+  height: 100%;
+  display: flex;
+  flex-flow: column;
   /*background-color: #0c2646;*/
 }
 .formReponse{
@@ -4543,7 +4546,7 @@ padding-top: 10px;
 }
 #send{
   float: right;
-  margin-right: 20px;
+  margin: 0px;
 }
 .test{
   background-color: #0c2646;
@@ -4594,3 +4597,45 @@ div.dt-searchPane div.dataTables_length{
 .wrong{
   border: solid 2px red;
 }
+
+#divTextarea{
+  display: flex;
+}
+#divTextarea div{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin: 0;
+  max-height: 20vh;
+  overflow: auto;
+  
+}
+#divTextarea p{
+  margin: 0;
+  padding: 0;
+}
+#divTextarea span{
+  display: flex;
+  align-items: center;
+}
+
+#topSideWiki{
+  display: flex;
+  align-items: center;
+}
+#topSideWiki input{
+  height: min-content;
+}
+#topSideWiki a{
+  margin-left: auto
+}
+
+.tippy-box[data-theme~='light-border']{
+  padding: 5px;
+}
+.tippy-box[data-theme~='light-border'] input{
+  /*background-color: whitesmoke;*/
+}
+
+

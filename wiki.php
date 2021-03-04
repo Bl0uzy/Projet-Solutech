@@ -12,8 +12,12 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+<?php
+require "bdd.php";
+$allWikis = $dbh ->query("SELECT * FROM wiki")
+?>
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
@@ -21,15 +25,28 @@ Coded by www.creative-tim.com
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Paper Dashboard 2 by Creative Tim
+        Wiki
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
+    <link href="datatable/datatables.min.css" rel="stylesheet">
+
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            href="https://unpkg.com/tippy.js@6/animations/scale.css"-->
+<!--    />-->
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/tippy.js@6/themes/light-border.css"
+    />
+    <link rel="stylesheet" href="./assets/css/input.css"/>
+
+
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!--  <link href="./assets/demo/demo.css" rel="stylesheet" />-->
 </head>
@@ -74,7 +91,7 @@ Coded by www.creative-tim.com
                 </li>
 
                 <li class="active ">
-                    <a href="wiki.html">
+                    <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
                     </a>
@@ -94,7 +111,7 @@ Coded by www.creative-tim.com
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand">Wiki</a>
+                    <a class="navbar-brand">Wiki</a><img id="newWiki" src="assets/img/icons/plus.svg" width="20px">
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -110,7 +127,39 @@ Coded by www.creative-tim.com
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="description">Your content here</h3>
+
+                    <table id="dataTable" class="display">
+                        <thead>
+                        <tr>
+                            <th>Sujet</th>
+                            <th>Utilisateurs ayant accès</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            foreach ($allWikis as $wiki){
+                                $allAccess = $dbh->query("SELECT * FROM user_wiki_access WHERE wiki_id == \"".$wiki['id']."\"");
+                                print_r($allAccess);
+
+                                echo "<tr id='".$wiki['id']."'>";
+                                echo "<td>".$wiki['titre']."</td>";
+                                echo "<td>";
+
+                                if ($allAccess != null){
+                                    foreach ($allAccess as $access){
+                                        $user = $dbh->query("SELECT * FROM users WHERE id = \"".$access['user_id']."\"")->fetch();
+                                        echo $user['nom'];
+                                    }
+                                }
+                                echo "</td>";
+
+                                echo "</tr>";
+                            }
+                        ?>
+
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
@@ -140,6 +189,18 @@ Coded by www.creative-tim.com
 <script src="./assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="./assets/js/paper-dashboard.js" type="text/javascript"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+<!--<script src="https://unpkg.com/tippy.js@6/themes/" ></script>-->
+
+<script src="assets/js/input.js"></script>
+<script src="datatable/datatables.min.js" type="text/javascript"></script>
+
+
+<script src="assets/js/wiki.js"></script>
+
+
 </body>
 
 </html>
