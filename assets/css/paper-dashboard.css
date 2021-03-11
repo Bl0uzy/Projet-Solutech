@@ -4438,7 +4438,7 @@ padding-top: 10px;
   width: auto;
 }
 
-#table_id tbody tr:hover,#usersDashboard tbody tr:hover,#mailsSupport tbody tr:hover{
+#table_id tbody tr:hover,#usersDashboard tbody tr:hover,#mailsSupport tbody tr:hover,#dataTable tbody tr:hover{
   background-color: grey;
 }
 
@@ -4638,4 +4638,168 @@ div.dt-searchPane div.dataTables_length{
   /*background-color: whitesmoke;*/
 }
 
+#newWiki{
+  cursor: pointer;
+}
 
+#utilisateursAjoutes{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap:wrap ;
+}
+
+#utilisateursAjoutes div{
+  background-color: lightgray;
+  border-radius: 8px;
+  margin: 3px;
+  padding: 5px;
+  text-align: center;
+}
+
+#utilisateursAjoutes div span{
+  color: red;
+  font-weight: bold;
+  font-size: larger;
+  cursor: pointer;
+}
+
+.copyLink{
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.delFile{
+  width: 18px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+#saveChanges{
+  background-color: white;
+  border-radius: 10px;
+  padding: 8px;
+  margin: 5px;
+  width:40px;
+  height: 40px;
+  border: 1px solid lightgray;
+  cursor: pointer;
+
+}
+#saveChanges:hover,#delWiki:hover,#editUserWiki:hover,#imgPieceJointe:hover,#imgPdf:hover {
+  background-color: lightgray;
+}
+#saveChanges:active,#delWiki:active,#editUserWiki:active,#imgPieceJointe:active {
+  background-color: grey;
+
+}
+.saveOk {
+  animation: zoominoutsinglefeatured 2s alternate ;
+}
+.saveOk path, .saveOk rect{
+  /*background-color: #dbdada;*/
+  fill: green;
+}
+
+.saveFail {
+  animation: zoominoutsinglefeatured 2s alternate ;
+}
+.saveFail path, .saveFail rect{
+  fill: darkred;
+}
+
+@keyframes zoominoutsinglefeatured {
+  0% {
+    transform: scale(1,1);
+  }
+  25% {
+    transform: scale(1.2,1.2);
+  }
+  50% {
+    transform: scale(1.1,1.1);
+  }
+  75% {
+    transform: scale(1.2,1.2);
+  }
+  100% {
+    transform: scale(1,1);
+  }
+}
+
+.cardcontainer img {
+  animation: zoominoutsinglefeatured 1s infinite ;
+}
+
+#delWiki{
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+  cursor: pointer;
+  background-color: white;
+  border: solid 1px lightgray;
+  border-radius: 10px;
+}
+
+#editUserWiki{
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+  padding-right: 1px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  background-color: white;
+  border: solid 1px lightgray;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+#imgPieceJointe{
+  width: 45px;
+  height: 45px;
+  padding: 4px;
+  padding-top: 2px;
+  cursor: pointer;
+  background-color: white;
+  border: solid 1px lightgray;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+#imgPdf{
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+  cursor: pointer;
+  background-color: white;
+  border: solid 1px lightgray;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+
+#imgFolder{
+  width: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+#folder, #divFolderInput{
+  display: flex;
+  margin: 10px;
+}
+#divFolderInput input{
+  width: 80%;
+  margin: 0;
+}
+#divFolderInput button{
+  margin: 0;
+  padding: 10px;
+}
+#folderLeftSide{
+  width: 50%;
+}
+#folderRightSide{
+  width: 50%;
+}
+#interFolder{
+  border: solid 1px black;
+  width: 50px;
+}

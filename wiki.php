@@ -13,6 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <?php
+session_start();
+
 require "bdd.php";
 $allWikis = $dbh ->query("SELECT * FROM wiki")
 ?>
@@ -36,10 +38,7 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
 
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
-<!--    <link-->
-<!--            rel="stylesheet"-->
-<!--            href="https://unpkg.com/tippy.js@6/animations/scale.css"-->
-<!--    />-->
+
     <link
             rel="stylesheet"
             href="https://unpkg.com/tippy.js@6/themes/light-border.css"
@@ -112,6 +111,7 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
                         </button>
                     </div>
                     <a class="navbar-brand">Wiki</a><img id="newWiki" src="assets/img/icons/plus.svg" width="20px">
+                    <img src="assets/img/icons/folder.svg" id="imgFolder" data-toggle="modal" data-target="#exampleModal">
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -119,11 +119,51 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    Nom de l'utilisateur
+                    <?php  echo $_SESSION['nom'] ?>
+                    <a id="deconnexion" href="index.php?deco="><img id="imgDeco" src="assets/img/icons/power-button.svg" width="30px" alt="Deconnexion" title="Deconnexion"></a>
                 </div>
             </div>
         </nav>
         <!-- End Navbar -->
+
+<!--        Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Dossier</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divFolderInput">
+                            <input type="text" placeholder="Nom du dossier">
+                            <button class="btn">Créer le dossier</button>
+                        </div>
+                        <div id="folder">
+                            <div id="folderLeftSide">
+                                <h6>Avec Dossier</h6>
+
+                            </div>
+
+                            <div id="interFolder">
+
+                            </div>
+
+                            <div id="folderRightSide">
+                                <h6>Sans dossier</h6>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
@@ -132,25 +172,21 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
                         <thead>
                         <tr>
                             <th>Sujet</th>
-                            <th>Utilisateurs ayant accès</th>
+                            <th>Groupe</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
                             foreach ($allWikis as $wiki){
-                                $allAccess = $dbh->query("SELECT * FROM user_wiki_access WHERE wiki_id == \"".$wiki['id']."\"");
-                                print_r($allAccess);
+//                                $allAccess = $dbh->query("SELECT * FROM user_wiki_access WHERE wiki_id == \"".$wiki['id']."\"");
+//                                print_r($allAccess);
 
                                 echo "<tr id='".$wiki['id']."'>";
                                 echo "<td>".$wiki['titre']."</td>";
                                 echo "<td>";
-
-                                if ($allAccess != null){
-                                    foreach ($allAccess as $access){
-                                        $user = $dbh->query("SELECT * FROM users WHERE id = \"".$access['user_id']."\"")->fetch();
-                                        echo $user['nom'];
-                                    }
-                                }
+                                if ($wiki['groupe'] != ""){
+                                    echo $wiki['groupe'];
+                                } else echo "Null";
                                 echo "</td>";
 
                                 echo "</tr>";

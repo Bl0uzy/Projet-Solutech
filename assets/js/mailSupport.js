@@ -53,11 +53,14 @@ function newTicket(){
 
 $("#dellMail").click(function () {
     var mailId = getUrlParameter('id');
+    console.log(mailId)
     $.confirm({
         title: 'Confirmation',
         content:'Vous allez effacer ce mail sans l\'avoir ajouter a un ticket',
         buttons: {
             Confirmer: function () {
+                console.log(mailId)
+
                 var fun  = 'delMail'
                 $.ajax({
                     url : 'ajax.php',
@@ -65,7 +68,7 @@ $("#dellMail").click(function () {
                     data:'fun='+fun+"&mailId="+mailId,
                     dataType : 'html',
                     success : function(code_html, statut){
-
+                        console.log(code_html)
                         location.href = "dashboard.php"
                         // $(code_html).appendTo("#commentaires"); // On passe code_html à jQuery() qui va nous créer l'arbre DOM !
                     },
@@ -147,7 +150,7 @@ function moveMail(mailId,mailContent,ticketId,userId) {
         data:'fun='+fun+"&mailId="+mailId+"&mailContent="+encodeURIComponent(mailContent)+"&ticketId="+ticketId+"&userId="+userId,
         dataType : 'html',
         success : function(code_html, statut){
-
+            console.log(code_html)
             location.href = "editTicket.php?id="+ticketId
             // $(code_html).appendTo("#commentaires"); // On passe code_html à jQuery() qui va nous créer l'arbre DOM !
         },

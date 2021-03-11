@@ -10,25 +10,25 @@
 // });
 
 CKEDITOR.disableAutoInline = true;
+
 // CKEDITOR.inline('editor1')
-CKEDITOR.on('instanceReady', function(evt) {
-    var editor = evt.editor;
-    console.log('The editor named ' + editor.name + ' is now ready');
-    editor.on('focus', function(e) {
-        console.log('The editor named ' + e.editor.name + ' is now focused');
-    });
-    editor.on('blur', function(e) {
-        console.log('The editor named ' + e.editor.name + ' is not focused');
-    });
-});
+// CKEDITOR.on('instanceReady', function(evt) {
+//     var editor = evt.editor;
+//     console.log('The editor named ' + editor.name + ' is now ready');
+//     editor.on('focus', function(e) {
+//         console.log('The editor named ' + e.editor.name + ' is now focused');
+//     });
+//     editor.on('blur', function(e) {
+//         console.log('The editor named ' + e.editor.name + ' is not focused');
+//     });
+// });
 CKEDITOR.inline('editor1',{
-    extraPlugins : 'editorplaceholder,autogrow',
+    extraPlugins : 'editorplaceholder,autogrow,link',
     editorplaceholder : 'Taper votre texte ici.',
     autoGrow_maxHeight: 600,
     autoGrow_minHeight: 20,
     autoGrow_bottomSpace:20,
 })
-// CKEDITOR.replace('editor1');
 
 $(document).ready(function () {
     // CKEDITOR.config.readOnly = true;

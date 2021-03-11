@@ -14,7 +14,10 @@ Coded by www.creative-tim.com
 -->
 <?php
 //require "upload.php"
+
 require "bdd.php";
+
+session_start();
 date_default_timezone_set('Europe/Paris');
 
 if (isset($_GET['titre'])){
@@ -28,6 +31,7 @@ if (isset($_GET['id'])){
         header('Location: wiki.php');
     } else $wikiDetails = $wikiDetails ->fetch();
 } else header('Location: wiki.php');
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -124,14 +128,15 @@ if (isset($_GET['id'])){
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    Nom de l'utilisateur
+                    <?php  echo $_SESSION['nom'] ?>
+                    <a id="deconnexion" href="index.php?deco="><img id="imgDeco" src="assets/img/icons/power-button.svg" width="30px" alt="Deconnexion" title="Deconnexion"></a>
                 </div>
             </div>
         </nav>
         <!-- End Navbar -->
 
 
-        <!-- Modal -->
+        <!-- Modal pieces jointes-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -146,35 +151,70 @@ if (isset($_GET['id'])){
                         </form>
                         <hr>
                         <p>Affichage des fichiers</p>
-                        <?php
-                        if (is_dir("./piecesJointes/".$_GET['id']."/")){
-                            $scandir = scandir("./piecesJointes/".$_GET['id']."/");
+                        <div id="allFiles"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            foreach($scandir as $fichier){
-                                if ($fichier != ".." && $fichier!="."){
-                                    echo "$fichier<br/>";
-
+        <!-- Modal ajout user-->
+        <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Utilisateurs</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select id="allUsers">
+                            <option>Ajouter un utilisateur</option>
+                            <?php
+                            foreach ($dbh->query("SELECT * FROM users") as $user){
+                                if ($dbh->query("SELECT * FROM user_wiki_access WHERE user_id =\"".$user['id']."\" AND wiki_id=\"".$_GET['id']."\"")->rowCount()==0){
+                                    if ($user['nom'] != "Admin" ) {
+                                        echo "<option value='" . $user['id'] . "'>" . $user['nom'] . "</option>";
+                                    }
                                 }
                             }
-                        }
-
-                        ?>
+                            ?>
+                        </select>
+                        <div id="utilisateursAjoutes"></div>
                     </div>
                 </div>
             </div>
         </div>
 
 
+
+
+
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
                     <div id="topSideWiki">
-                        <input type="text" disabled value="<?php echo $wikiDetails['titre']?>">
-                        <button class="btn">Ajouter un/des utilisateur(s)</button>
-                        <button id="saveChanges" class="btn">Enregistrer les modifications </button>
-                        <button id="delWiki" class="btn">Supprimer </button>
+                        <input id="titre" type="text" disabled value="<?php echo $wikiDetails['titre']?>">
+                        <img id="editUserWiki" title="Ajouter un/des utilisateur(s)" src="assets/img/icons/edit.svg" data-toggle="modal" data-target="#exampleModal2">
+<!--                        <button class="btn" data-toggle="modal" data-target="#exampleModal2">Ajouter un/des utilisateur(s)</button>-->
+<!--                        <img id="saveChanges" src="assets/img/icons/save.svg" >-->
+                        <div title="Enregistrer">
+                            <svg id="saveChanges" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
+                                    <g xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M493.254,77.255l-58.508-58.51C422.742,6.742,406.465,0,389.49,0H352v112c0,8.836-7.164,16-16,16H80   c-8.836,0-16-7.164-16-16V0H32C14.328,0,0,14.326,0,32v448c0,17.673,14.328,32,32,32h448c17.672,0,32-14.327,32-32V122.51   C512,105.535,505.258,89.257,493.254,77.255z M448,448H64V256h384V448z" fill="#000000" data-original="#000000" style="" class=""/>
+                                        <rect x="224" width="64" height="96" fill="#000000" data-original="#000000" style="" class=""/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
 
-                        <a data-toggle="modal" data-target="#exampleModal"><img src="assets/img/icons/attach.svg" width="40px"></a>
+                        <img src="assets/img/icons/pdf-file.svg" id="imgPdf">
+
+                        <img id="delWiki" title="Supprimer le wiki" alt="Supprimer le wiki" src="assets/img/icons/rubbish.svg">
+<!--                        <button id="delWiki" class="btn">Supprimer </button>-->
+
+
+                        <img id="imgPieceJointe" data-toggle="modal" data-target="#exampleModal" src="assets/img/icons/attach.svg" width="40px">
                     </div>
                     <div id="textareaWikiContent">
                         <textarea name="editor1" id="editor1" placeholder="Ecriver votre message ici." contenteditable="true" ><?php echo $wikiDetails['content'] ?></textarea>
@@ -184,6 +224,7 @@ if (isset($_GET['id'])){
                 </div>
             </div>
         </div>
+
         <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
             <div class="container-fluid">
                 <div class="row">

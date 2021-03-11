@@ -1,13 +1,6 @@
 <?php
 require "bdd.php";
-//if ($_GET['fun']=='addUser'){
-////    echo $_GET['nom'], " | ",$_GET['entreprise'], " | ",$_GET['email'], " | ",$_GET['mdp'];
-//    $nom = $_GET['nom']; $entreprise = $_GET['entreprise']; $email = $_GET['email']; $passw = $_GET['mdp'];
-////    $dbh -> query("INSERT INTO users(nom,entreprise,mail,passw) VALUES (\"$nom\",\"$entreprise\",\"$email\",\"$passw\")");
-//    if ($dbh -> query("INSERT INTO users(nom,entreprise,mail,passw) VALUES (\"$nom\",\"$entreprise\",\"$email\",\"$passw\")")){
-//        echo "L'utilisateur ",$nom," a été créé";
-//    } else echo "Echec";
-//}
+
 if (isset($_GET['fun'])){
     switch ($_GET['fun']){
         case 'addUser':
@@ -54,7 +47,8 @@ if (isset($_GET['fun'])){
             break;
 
         case 'delMail':
-            $dbh->query("DELETE FROM mailsupport WHERE id = \"".$_GET['id']."\"");
+//            echo $_GET['mailId'];
+            $dbh->query("DELETE FROM mailsupport WHERE id = \"".$_GET['mailId']."\"");
 
             break;
 
@@ -71,17 +65,71 @@ if (isset($_GET['fun'])){
         case 'delWiki':
             $wikiId = $_GET['id'];
             $path = "./piecesJointes/".$wikiId."/";
-            print_r($dbh->query("DELETE FROM user_wiki_access WHERE wiki_id = \"".$wikiId."\""));
+//            print_r($dbh->query("DELETE FROM user_wiki_access WHERE wiki_id = \"".$wikiId."\""));
 
-            $scandir = scandir("./piecesJointes/".$_GET['id']."/");
-            foreach($scandir as $fichier){
-                if ($fichier != ".." && $fichier!="."){
-                    echo unlink($path.$fichier);
+            if (is_dir($path)){
+                $scandir = scandir($path);
+                foreach($scandir as $fichier){
+                    if ($fichier != ".." && $fichier!="."){
+                        echo unlink($path.$fichier);
+                    }
+                }
+                if (rmdir($path)){
+                    $dbh -> query("DELETE FROM wiki WHERE id = \"".$wikiId."\"");
+                } else echo "echec";
+            } else{
+                $dbh -> query("DELETE FROM wiki WHERE id = \"".$wikiId."\"");
+            }
+
+
+            break;
+
+        case 'ajoutUserToWiki':
+            $userId = $_GET['userID'];
+            $wikiId = $_GET['id'];
+
+            $dbh->query("INSERT INTO user_wiki_access (user_id, wiki_id) VALUES (\"".$userId."\",\"".$wikiId."\")");
+
+            break;
+
+        case 'displayUsers':
+            $wikiId = $_GET['id'];
+            foreach ($dbh->query("SELECT * FROM user_wiki_access WHERE wiki_id=\"".$wikiId."\"") as $wikiAccess){
+                $user = $dbh->query("SELECT * FROM users WHERE id = \"".$wikiAccess['user_id']."\"")->fetch();
+                echo "<div id='".$user['id']."' class='user'>".$user['nom']." | ".$user['entreprise']."  <span title=\"Supprimer l'utilisateur\">&times;</span></div>";
+            }
+
+            break;
+
+        case 'delUserAccessToWiki':
+            $userID = $_GET['userID'];
+            $wikiId = $_GET['id'];
+            $dbh->query("DELETE FROM user_wiki_access WHERE user_id=\"".$userID."\" AND wiki_id=\"".$wikiId."\"");
+
+            break;
+
+        case 'displayFiles':
+            $relativPath = "./piecesJointes/".$_GET['id']."/";
+            if (is_dir($relativPath)){
+                $scandir = scandir($relativPath);
+
+                foreach($scandir as $fichier){
+                    if ($fichier != ".." && $fichier!="."){
+//                        $absolutPath = realpath($relativPath.$fichier);
+                        $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
+                        $absolutPath =substr('http://' . $_SERVER['HTTP_HOST'] . $uri_parts[0],0,-9).substr($relativPath,1).$fichier;
+                        echo "<a href='$absolutPath' title='Télécharger le fichier' download='$fichier'>$fichier</a><img data-toggle='popover' data-content='Lien copié !' class='copyLink' src=\"assets/img/icons/link.svg\"  width='15px'><img class='delFile' src=\"assets/img/icons/rubbish.svg\"><br/>";
+                    }
                 }
             }
-            if (rmdir($path)){
-                $dbh -> query("DELETE FROM wiki WHERE id = \"".$wikiId."\"");
-            } else echo "echec";
+
+            break;
+
+        case 'delFile':
+            $filePath = $_GET['path'];
+            unlink($filePath);
+
+            break;
     }
 
 }
@@ -94,7 +142,7 @@ if (isset($_POST['fun'])){
             $idTicket = $_POST['ticketId'];
             $idUser = $_POST['userId'];
             $date = $dbh ->query("SELECT date FROM mailsupport WHERE id = \"".$idMail."\"")->fetch()['date'];
-            $RequestAdd = $dbh ->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".$content."\",\"".$idTicket."\",\"".$idUser."\",\"".$date."\")");
+            $RequestAdd = $dbh ->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".addslashes($content)."\",\"".$idTicket."\",\"".$idUser."\",\"".$date."\")");
 
             if ($RequestAdd){
                 $dbh->query("UPDATE tickets SET nouveauMessage = 1,derniereModif= \"".$date."\" WHERE id = \"".$idTicket."\"");
@@ -105,8 +153,9 @@ if (isset($_POST['fun'])){
 
         case 'updateTextWiki':
             $id = $_POST['id'];
-            $content = $_POST['content'];
-            $dbh ->query("UPDATE wiki SET content =\"".$content."\" WHERE id  = \"".$id."\"");
+            $content = strval($_POST['content']);
+
+            echo $dbh ->query("UPDATE wiki SET content =\"".addslashes($content)."\" WHERE id  = \"".$id."\"");
 
             break;
     }
