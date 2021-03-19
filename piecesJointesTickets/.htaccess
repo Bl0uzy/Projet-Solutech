@@ -1,0 +1,5 @@
+Options All –Indexes
+deny from all
+<Files *.php>
+allow from all
+</Files>

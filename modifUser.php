@@ -141,6 +141,18 @@ if (isset($_GET['user'])){
 <!--                                    <img src='assets/img/icons/loading.svg' alt='Chargement' width='20px'>-->
                                     <button data-html="true" id="btnValidateUser" data-toggle="popover" data-content="<img class='loading' src='assets/img/icons/loading.svg' alt='Chargement' width='20px'>" class="btn">Valider</button>
                                     <?php if (isset($_GET['user'])) echo '<img id="delUser" src="assets/img/icons/remove.svg" alt="Supprimer l\'utilisateur" title="Supprimer l\'utilisateur" width="45px">' ?>
+
+                                    <?php
+                                    if (isset($_GET['user'])){
+                                    ?>
+                                        <span title="Date de validitée" id="dateValiditee">
+                                            <?php
+                                            $dateValiditee = $dbh->query("SELECT date_validitee FROM users WHERE id = $id")->fetch()['date_validitee'];
+                                            ?>
+                                            <input id="checkbox" <?php if ($dateValiditee != ""){echo "checked";}else echo "disabled"?>  type="checkbox">
+                                            <input value="<?php echo $dateValiditee?>" type="date">
+                                        </span>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </legend>
@@ -195,6 +207,28 @@ if (isset($_GET['user'])){
 
                             <fieldset class="bloc-userWiki">
                                 <legend>Wiki</legend>
+                                <table id="table_wiki" class="display">
+                                    <thead>
+                                    <tr>
+                                        <th>Titre</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if (isset($user)){
+                                        foreach ($dbh->query("SELECT * FROM user_wiki_access WHERE user_id = $id") as $access){
+                                            $wikiId = $access['wiki_id'];
+                                            $wiki = $dbh->query("SELECT * FROM wiki WHERE id = $wikiId")->fetch();
+                                            echo "<tr id='".$wiki['id']."'><td>".$wiki['titre']."</td></tr>";
+                                        }
+
+                                    }
+
+                                    ?>
+
+                                    </tbody>
+                                </table>
                             </fieldset>
                         </div>
 

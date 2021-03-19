@@ -137,22 +137,22 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div id="divFolderInput">
-                            <input type="text" placeholder="Nom du dossier">
-                            <button class="btn">Créer le dossier</button>
+                        <div id="topSideFolder">
+                            <div id="divFolderInput">
+                                <input type="text" placeholder="Nom du nouveau dossier">
+                                <button id="btnNewFolder" class="btn">Créer</button>
+                            </div>
+                            <select id="allFolders"></select>
                         </div>
+                        <hr>
+                        <span  id="folderName"></span>
                         <div id="folder">
-                            <div id="folderLeftSide">
-                                <h6>Avec Dossier</h6>
+                            <div id="listWiki">
 
                             </div>
 
-                            <div id="interFolder">
+                            <div id="listUsers">
 
-                            </div>
-
-                            <div id="folderRightSide">
-                                <h6>Sans dossier</h6>
 
                             </div>
                         </div>
@@ -172,12 +172,13 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
                         <thead>
                         <tr>
                             <th>Sujet</th>
-                            <th>Groupe</th>
+                            <th>Dossier</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
                             foreach ($allWikis as $wiki){
+                                $idGroupe = $wiki['groupe'];
 //                                $allAccess = $dbh->query("SELECT * FROM user_wiki_access WHERE wiki_id == \"".$wiki['id']."\"");
 //                                print_r($allAccess);
 
@@ -185,8 +186,10 @@ $allWikis = $dbh ->query("SELECT * FROM wiki")
                                 echo "<td>".$wiki['titre']."</td>";
                                 echo "<td>";
                                 if ($wiki['groupe'] != ""){
-                                    echo $wiki['groupe'];
-                                } else echo "Null";
+                                    $dossier = $dbh->query("SELECT * FROM dossier WHERE id=$idGroupe")->fetch();
+
+                                    echo $dossier['nom'];
+                                } else echo "";
                                 echo "</td>";
 
                                 echo "</tr>";

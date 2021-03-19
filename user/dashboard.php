@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 <?php
 require "../bdd.php";
 session_start();
+$idUser = $_SESSION['id']
 //if (isset($_SESSION['id']) && $_SESSION['nom']){
 ////    if ($_SESSION['nom'] == "Admin"){
 ////
@@ -30,7 +31,7 @@ session_start();
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Dashboard
+        Tableau de bord
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -67,7 +68,7 @@ session_start();
                 <li class="active ">
                     <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
-                        <p>Dashboard</p>
+                        <p>Tableau de bord</p>
                     </a>
                 </li>
 
@@ -79,7 +80,7 @@ session_start();
                 </li>
 
                 <li>
-                    <a href="wiki.html">
+                    <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
                     </a>
@@ -99,7 +100,7 @@ session_start();
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand" >Dashboard</a>
+                    <a class="navbar-brand" >Tableau de bord</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -122,7 +123,29 @@ session_start();
 <!--                    </fieldset>-->
 
                     <fieldset class="wiki-dashboard">
+
                         <legend><a href="wiki.php">Wiki</a></legend>
+
+                        <table id="table_wiki" class="display">
+                            <thead>
+                            <tr>
+                                <th>Sujet</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach ($dbh ->query("SELECT * FROM wiki WHERE id IN (SELECT wiki_id FROM user_wiki_access WHERE user_id = $idUser)") as $wiki){
+
+                                echo "<tr id='".$wiki['id']."'>
+                                  <td>".$wiki['titre']."</td>
+                                  
+                              </tr>";
+                            }
+
+                            ?>
+
+                            </tbody>
+                        </table>
                     </fieldset>
 
                     <fieldset class="ticket-dashboard widthTicketDashboardUser">
@@ -142,7 +165,7 @@ session_start();
                                 echo "<tr id='".$ticket['id']."'>
                                   <td>".$ticket['Sujet']."</td>
                                   <td>".$ticket['Statut']."</td>
-                                  <td>".$ticket['derniereModif']."</td>
+                                  <td data-order = ".$ticket['derniereModif'].">".date('d-m-Y à H:i',strtotime($ticket['derniereModif']))."</td>
                               </tr>";
                             }
 

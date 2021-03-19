@@ -41,8 +41,11 @@ if (isset($_GET['id'])){
     header('Location: ticket.php');
 }
 if (isset($_POST['editor1'])){
+    $text = $_POST['editor1'];
+    $encryptedText = openssl_encrypt($text,"AES-128-ECB",$key);
+
     $derniereModif = date("Y-m-d H:i:s");
-    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".$_POST['editor1']."\",\"".$_GET['id']."\","."0".",\"$derniereModif\")");
+    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".addslashes($encryptedText)."\",\"".$_GET['id']."\","."0".",\"$derniereModif\")");
     $dbh->query("UPDATE tickets SET derniereModif=\"".$derniereModif."\" WHERE id = \"".$ticket['id']."\"");
 
     if ($ticket['nouveauMessage'] == 1){
@@ -77,6 +80,8 @@ if (isset($_POST['editor1'])){
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
 <!--    <script src="CKEditor/build/ckeditor.js"></script>-->
+    <link href="assets/dropzone-5.7.0/dist/dropzone.css" rel="stylesheet"/>
+    <script src="./assets/dropzone-5.7.0/dist/dropzone.js"></script>
 
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -157,6 +162,28 @@ if (isset($_POST['editor1'])){
             </div>
         </nav>
         <!-- End Navbar -->
+<!--        Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pièces jointes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="upload-widget" method="post" class="dropzone" name="image">
+                        </form>
+                        <hr>
+                        <p>Affichage des fichiers</p>
+                        <div id="allFiles"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
@@ -165,17 +192,17 @@ if (isset($_POST['editor1'])){
                     <div class="wrap">
                         <div>
                             <fieldset id="bloc-editTicket">
-                                <legend><input type="text" disabled value="<?php if (isset($_GET['id'])){ echo $ticket['Sujet']; }else echo "erreur" ?>"><span><?php if (isset($_GET['id'])){ echo $client['nom']; }?></span>
-                                <select id="selectStatut">
-                                    <option <?php if ($ticket['Statut']=="Nouveau") echo 'selected="selected"'?> value="Nouveau">Nouveau</option>
-                                    <option <?php if ($ticket['Statut']=="En cours") echo 'selected="selected"'?> value="En cours">En cours</option>
-                                    <option <?php if ($ticket['Statut']=="Resolu") echo 'selected="selected"'?> value="Resolu">Resolu</option>
-                                </select>
+                                <legend>
+                                    <input type="text" disabled value="<?php if (isset($_GET['id'])){ echo $ticket['Sujet']; }else echo "erreur" ?>"><span><?php if (isset($_GET['id'])){ echo $client['nom']; }?></span>
+                                    <select id="selectStatut">
+                                        <option <?php if ($ticket['Statut']=="Nouveau") echo 'selected="selected"'?> value="Nouveau">Nouveau</option>
+                                        <option <?php if ($ticket['Statut']=="En cours") echo 'selected="selected"'?> value="En cours">En cours</option>
+                                        <option <?php if ($ticket['Statut']=="Resolu") echo 'selected="selected"'?> value="Resolu">Resolu</option>
+                                    </select>
+
                                 </legend>
+                                <img id="imgPieceJointe" data-toggle="modal" data-target="#exampleModal" style="float: right;margin-top: -54px; margin-right: 30px;" src="assets/img/icons/attach.svg">
                                 <div id="messAndTextarea">
-<!--                                    --><?php //if ($ticket['Statut']=="Resolu"){
-//
-//                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="assets/img/icons/text.svg">'?>
                                     <div id="contentMess">
                                     <?php
                                         foreach ($dbh->query("SELECT * FROM messagesticket WHERE idTicket =\"".$_GET['id']."\"") as $message){
@@ -185,7 +212,9 @@ if (isset($_POST['editor1'])){
                                             }else {
                                                 echo "messRecu";
                                             }
-                                            echo "'><div class='messageT'>".$message['message']."</div></div>";
+                                            $decrypted_chaine = openssl_decrypt($message['message'], "AES-128-ECB" ,
+                                                $key);
+                                            echo "'><div class='messageT'>".$decrypted_chaine."</div></div>";
                                         }
                                     ?>
                                     </div>

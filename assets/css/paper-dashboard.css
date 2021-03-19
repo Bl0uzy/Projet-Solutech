@@ -4438,7 +4438,7 @@ padding-top: 10px;
   width: auto;
 }
 
-#table_id tbody tr:hover,#usersDashboard tbody tr:hover,#mailsSupport tbody tr:hover,#dataTable tbody tr:hover{
+#table_id tbody tr:hover,#table_wiki tbody tr:hover,#usersDashboard tbody tr:hover,#mailsSupport tbody tr:hover,#dataTable tbody tr:hover{
   background-color: grey;
 }
 
@@ -4561,7 +4561,7 @@ padding-top: 10px;
 #deconnexion{
   margin-left: 20px
 }
-.ticket-dashboard #table_id_wrapper,#usersDashboard,#mailsSupport{
+.ticket-dashboard #table_id_wrapper,.wiki-dashboard #table_wiki_wrapper,#usersDashboard,#mailsSupport{
   margin-top: -10px;
 }
 
@@ -4780,10 +4780,15 @@ div.dt-searchPane div.dataTables_length{
   margin-left: 20px;
   cursor: pointer;
 }
-
+#topSideFolder{
+  display: flex;
+}
 #folder, #divFolderInput{
   display: flex;
-  margin: 10px;
+  /*margin: 10px;*/
+}
+#divFolderInput{
+  width: 50%;
 }
 #divFolderInput input{
   width: 80%;
@@ -4793,13 +4798,36 @@ div.dt-searchPane div.dataTables_length{
   margin: 0;
   padding: 10px;
 }
-#folderLeftSide{
+#allFolders{
   width: 50%;
 }
-#folderRightSide{
+#listWiki,#listUsers{
   width: 50%;
+  margin: 4px;
 }
-#interFolder{
-  border: solid 1px black;
-  width: 50px;
+#folder hr{
+  margin: 7px 0 7px 0;
+}
+.rmvWikiFromFolder,.rmvUserFromFolder{
+  width: 20px;
+  float: right;
+  cursor: pointer;
+}
+
+#dateValiditee{
+  border: solid 1px lightgrey;
+  border-radius: 8px;
+  padding: 10px;
+  padding-bottom: 13px;
+  background-color: #e6e6e6;
+}
+#removeFolder{
+  width: 26px;
+  padding: 2px;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  background-color: whitesmoke;
+  margin-left: 6px;
+  margin-top: -5px;
+  cursor: pointer;
 }

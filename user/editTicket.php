@@ -42,11 +42,14 @@ if (isset($_GET['sujet'])){
     }
 }
 
-
 if (isset($_POST['editor1'])){
     $derniereModif = date("Y-m-d H:i:s");
 
-    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".$_POST['editor1']."\",\"".$_GET['id']."\",".$_SESSION['id'].",\"$derniereModif\")");
+    $text = $_POST['editor1'];
+
+    $encryptedText = openssl_encrypt($text,"AES-128-ECB",$key);
+
+    $dbh->query("INSERT INTO messagesticket(message,idTicket,idUser,date) VALUES (\"".addslashes($encryptedText)."\",\"".$_GET['id']."\",".$_SESSION['id'].",\"$derniereModif\")");
     $dbh->query("UPDATE tickets SET derniereModif=\"".$derniereModif."\" WHERE id = \"".$ticket['id']."\"");
 
     if ($ticket['nouveauMessage'] == 0){
@@ -67,7 +70,7 @@ if (isset($_POST['editor1'])){
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Paper Dashboard 2 by Creative Tim
+        Ticket - <?php echo $ticket['Sujet']; ?>
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -78,7 +81,8 @@ if (isset($_POST['editor1'])){
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!--    <script src="CKEditor/build/ckeditor.js"></script>-->
-
+    <link href="../assets/dropzone-5.7.0/dist/dropzone.css" rel="stylesheet"/>
+    <script src="../assets/dropzone-5.7.0/dist/dropzone.js"></script>
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!--  <link href="./assets/demo/demo.css" rel="stylesheet" />-->
@@ -105,7 +109,7 @@ if (isset($_POST['editor1'])){
                 <li>
                     <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
-                        <p>Dashboard</p>
+                        <p>Tableau de bord</p>
                     </a>
                 </li>
 
@@ -117,7 +121,7 @@ if (isset($_POST['editor1'])){
                 </li>
 
                 <li>
-                    <a href="wiki.html">
+                    <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
                     </a>
@@ -145,11 +149,34 @@ if (isset($_POST['editor1'])){
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    Nom de l'utilisateur
+                    <?php  echo $_SESSION['nom'] ?>
+                    <a id="deconnexion" href="../index.php?deco="><img id="imgDeco" src="../assets/img/icons/power-button.svg" width="30px" alt="Deconnexion" title="Deconnexion"></a>
                 </div>
             </div>
         </nav>
         <!-- End Navbar -->
+        <!--        Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pièces jointes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="upload-widget" method="post" class="dropzone" name="image">
+                        </form>
+                        <hr>
+                        <p>Affichage des fichiers</p>
+                        <div id="allFiles"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
@@ -164,11 +191,11 @@ if (isset($_POST['editor1'])){
                                         <option <?php if ($ticket['Statut']=="En cours") echo 'selected="selected"'?> value="En cours">En cours</option>
                                         <option <?php if ($ticket['Statut']=="Resolu") echo 'selected="selected"'?> value="Resolu">Resolu</option>
                                     </select>
-                                </legend>
-                                <div id="messAndTextarea">
-                                    <?php if ($ticket['Statut']=="Resolu"){
 
-                                    } else echo '<img id="textPopup" TITLE="Répondre" alt="Répondre" src="../assets/img/icons/text.svg">'?>
+                                </legend>
+                                <img id="imgPieceJointe" data-toggle="modal" data-target="#exampleModal" style="float: right;margin-top: -54px; margin-right: 30px;" src="../assets/img/icons/attach.svg">
+
+                                <div id="messAndTextarea">
                                     <div id="contentMess">
                                         <?php
                                         foreach ($dbh->query("SELECT * FROM messagesticket WHERE idTicket =\"".$_GET['id']."\"") as $message){
@@ -178,18 +205,26 @@ if (isset($_POST['editor1'])){
                                             }else {
                                                 echo "messRecu";
                                             }
-                                            echo "'><div class='messageT'>".$message['message']."</div></div>";
+                                            $decrypted_chaine = openssl_decrypt($message['message'], "AES-128-ECB" ,
+                                                $key);
+                                            echo "'><div class='messageT'>".$decrypted_chaine."</div></div>";
                                         }
                                         ?>
                                     </div>
 
 
 
-                                    <form hidden class="formReponse" action="editTicket.php<?php echo "?id=".$_GET['id']; ?>" method="post">
-                                        <textarea hidden <?php if ($ticket['Statut']=="Resolu") echo 'disabled'?> name="editor1" id="editor1" contenteditable="true" ></textarea>
+                                    <div <?php if ($ticket['Statut']=="Resolu") echo 'hidden'?> id="inputMess">
+                                        <form  class="formRponse" action="editTicket.php<?php echo "?id=".$_GET['id']; ?>" method="post">
+                                            <div id="divTextarea">
+                                                <textarea <?php if ($ticket['Statut']=="Resolu") echo 'disabled'?> name="editor1" id="editor1" placeholder="Ecriver votre message ici." contenteditable="true" ></textarea>
+                                                <span>
+                                                    <button type="submit" class="btn" id="send">Envoyer</button>
+                                                </span>
+                                            </div>
 
-                                        <button type="submit" class="btn" id="send">Envoyer</button>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </fieldset>
                         </div>
@@ -225,7 +260,7 @@ if (isset($_POST['editor1'])){
 <script src="../assets/js/input.js" type="text/javascript"></script>
 <script src="../ckeditor/ckeditor.js"></script>
 <script src="../ckeditor/adapters/jquery.js"></script>
-<script src="../assets/js/editTicket.js" type="text/javascript"></script>
+<script src="../assets/js/editTicketUser.js" type="text/javascript"></script>
 
 </body>
 

@@ -110,3 +110,53 @@ $("#table_id").on('click','tbody tr',function () {
     console.log($(this).attr("id"))
     window.location.href="editTicket.php?id="+$(this).attr("id")
 })
+$("#table_wiki").on('click','tbody tr',function () {
+    console.log($(this).attr("id"))
+    window.location.href="editWiki.php?id="+$(this).attr("id")
+})
+
+$("#dateValiditee input[type = 'date']").change(function () {
+    var date = $(this).val();
+    var id = getUrlParameter("user")
+    var fun = "modifDateUser"
+    $.ajax({
+        url : 'ajax.php',
+        type : 'GET',
+        data:'fun='+fun+'&date='+date+'&id='+id,
+        dataType : 'html',
+        success : function(code_html, statut){
+            console.log(code_html)
+            $("#dateValiditee input[type = 'checkbox']").attr("disabled",false)
+            $("#dateValiditee input[type = 'checkbox']").prop("checked", true)
+        },
+        error : function(resultat, statut, erreur){
+        },
+        complete : function(resultat, statut){
+        }
+    });
+})
+
+$("#dateValiditee input[type = 'checkbox']").change(function () {
+    var checked = $(this).is(":checked")
+    if (!checked){
+        var date = "";
+        var id = getUrlParameter("user")
+        var fun = "modifDateUser"
+        $.ajax({
+            url : 'ajax.php',
+            type : 'GET',
+            data:'fun='+fun+'&date='+date+'&id='+id,
+            dataType : 'html',
+            success : function(code_html, statut){
+                console.log(code_html)
+                $("#dateValiditee input[type = 'checkbox']").attr("disabled",true)
+                $("#dateValiditee input[type = 'checkbox']").prop("checked", false)
+                $("#dateValiditee input[type = 'date']").val("")
+            },
+            error : function(resultat, statut, erreur){
+            },
+            complete : function(resultat, statut){
+            }
+        });
+    }
+})

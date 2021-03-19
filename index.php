@@ -12,12 +12,23 @@ if(isset($_GET['deco'])){
 }
 
 if (isset($_POST['mail']) && isset($_POST['pass'])){
-    $user= $dbh->query('SELECT id, passw, nom FROM users WHERE mail = "'.$_POST['mail'].'"')->fetch();
+    $user= $dbh->query('SELECT * FROM users WHERE mail = "'.$_POST['mail'].'"')->fetch();
     $passwIsCorrect = password_verify($_POST['pass'],$user['passw']);
+
     if ($passwIsCorrect){
-        session_start();
-        $_SESSION['id'] = $user['id'];
-        $_SESSION['nom'] = $user['nom'];
+        if ($user['date_validitee'] != ""){
+            if ($user['date_validitee']>date("Y-m-d")){
+                session_start();
+                $_SESSION['id'] = $user['id'];
+                $_SESSION['nom'] = $user['nom'];
+            } else{
+                $dateError="";
+            }
+        } else{
+            session_start();
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['nom'] = $user['nom'];
+        }
 
     }
 }
@@ -95,6 +106,10 @@ if (isset($_SESSION['id']) && $_SESSION['nom']){
                                 } else{
                                     if (!$passwIsCorrect){
                                         echo "Mauvais identifiant ou mot de passe !";
+                                    } else{
+                                        if (isset($dateError)) {
+                                            echo "Ce compte n'est plus activé";
+                                        }
                                     }
                                 }
                             }

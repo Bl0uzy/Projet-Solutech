@@ -21,7 +21,7 @@ session_start();
 date_default_timezone_set('Europe/Paris');
 
 if (isset($_GET['titre'])){
-    echo 'fdsqfsdqgrerqfdsqfdqfqdfqds';
+//    echo 'fdsqfsdqgrerqfdsqfdqfqdfqds';
     $dbh->query("INSERT INTO wiki(titre,date,content) VALUES (\"".$_GET['titre']."\",\"".date('Y-m-d H:i:s')."\",'')");
     header('Location: editWiki.php?id='.$dbh->lastInsertId());
 }
@@ -217,7 +217,9 @@ if (isset($_GET['id'])){
                         <img id="imgPieceJointe" data-toggle="modal" data-target="#exampleModal" src="assets/img/icons/attach.svg" width="40px">
                     </div>
                     <div id="textareaWikiContent">
-                        <textarea name="editor1" id="editor1" placeholder="Ecriver votre message ici." contenteditable="true" ><?php echo $wikiDetails['content'] ?></textarea>
+                        <textarea name="editor1" id="editor1" placeholder="Ecriver votre message ici." contenteditable="true" ><?php
+                            $decrypted_chaine = openssl_decrypt($wikiDetails['content'], "AES-128-ECB" , $key);
+                            echo $decrypted_chaine ?></textarea>
                     </div>
 
 

@@ -70,7 +70,7 @@ session_start();
                 <li>
                     <a href="dashboard.php">
                         <i class="nc-icon nc-bank"></i>
-                        <p>Dashboard</p>
+                        <p>Tableau de bord</p>
                     </a>
                 </li>
 
@@ -82,7 +82,7 @@ session_start();
                 </li>
 
                 <li>
-                    <a href="wiki.html">
+                    <a href="wiki.php">
                         <i class="nc-icon nc-zoom-split"></i>
                         <p>Wiki</p>
                     </a>
@@ -123,7 +123,7 @@ session_start();
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <table id="table_id" class="display">
+                    <table id="table_wiki" class="display">
                         <thead>
                         <tr>
                             <th>Sujet</th>
@@ -138,8 +138,8 @@ session_start();
                             echo "<tr id='".$ticket['id']."'>
                                       <td>".$ticket['Sujet']."</td>
                                       <td>".$ticket['Statut']."</td>
-                                      <td>".date_format(date_create($ticket['derniereModif']),'Y-m-d')."</td>
-                                      <td>".$ticket['DateCreation']."</td>
+                                      <td data-order = '".$ticket['DateCreation']."'>".date("d-m-Y",strtotime($ticket['DateCreation']))."</td>
+                                      <td data-order = '".$ticket['derniereModif']."'>".date('d-m-Y à H:i',strtotime($ticket['derniereModif']))."</td>   
                                   </tr>";
                         }
                         ?>
@@ -177,9 +177,12 @@ session_start();
 <script src="../assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/paper-dashboard.js" type="text/javascript"></script>
-<script src="../assets/js/ticket.js" type="text/javascript"></script>
+<!--<script src="../assets/js/ticket.js" type="text/javascript"></script>-->
 <script src="../assets/js/input.js" type="text/javascript"></script>
 <script src="../datatable/datatables.min.js" type="text/javascript"></script>
+
+<script src="../assets/js/ticketUser.js" type="text/javascript"></script>
+
 </body>
 
 </html>

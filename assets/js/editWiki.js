@@ -41,11 +41,34 @@ var dropzone = new Dropzone("#upload-widget",{
     }
 })
 
+
+
 var editTicket = $( '#editor1' ).ckeditor({
-    extraPlugins : 'justify',
-    height: '65vh',
+    // extraPlugins : 'justify',
+    removePlugins :'autogrow',
+    height: '60vh',
     resize_enabled:false,
+    toolbarGroups : [
+        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+        { name: 'links', groups: [ 'links' ] },
+        { name: 'forms', groups: [ 'forms' ] },
+        { name: 'insert', groups: [ 'insert' ] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+        '/',
+        { name: 'colors', groups: [ 'colors' ] },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'styles', groups: [ 'styles' ] },
+        { name: 'tools', groups: [ 'tools' ] },
+        { name: 'others', groups: [ 'others' ] },
+        { name: 'about', groups: [ 'about' ] }
+    ],
+    removeButtons : 'Source,Save,NewPage,ExportPdf,Preview,Print,Templates,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CreateDiv,Language,Flash,Smiley,SpecialChar,Iframe,Find,CopyFormatting,RemoveFormat,About,Maximize,ShowBlocks,PasteText,PasteFromWord,Format,Styles,Font'
 });
+
+
+
 
 var isLaunched;
 function checkLastSave() {
@@ -239,6 +262,9 @@ function copyLink() {
         }, 2000);
     })
 }
+
+
+
 
 function displayAllUsers() {
     var fun = "displayUsers"
