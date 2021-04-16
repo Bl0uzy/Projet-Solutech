@@ -5,11 +5,17 @@ $(document).ready(function () {
         // ordering:  false,
         info: false,
         language: {
-            search: "Recherche :"
+            search: "Recherche :",
+            emptyTable:" "
+
         }
     })
 })
-
+$("#addTicket").popover({
+    html : true,
+    container : 'body',
+    sanitize : false
+})
 $("#table_wiki").on('click','tbody tr',function () {
     console.log($(this).attr("id"))
     window.location.href="editTicket.php?id="+$(this).attr("id")

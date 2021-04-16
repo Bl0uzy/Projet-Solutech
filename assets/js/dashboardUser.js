@@ -3,13 +3,19 @@ $(document).ready(function () {
         paging: false,
         searching: false,
         // ordering:  false,
-        info: false
+        info: false,
+        language:{
+            emptyTable:" "
+        }
     })
     $("#table_wiki").DataTable({
         paging: false,
         searching: false,
         // ordering:  false,
-        info: false
+        info: false,
+        language:{
+            emptyTable:" "
+        }
     })
 })
 

@@ -106,7 +106,7 @@ function saveWiki() {
     $.ajax({
         url : 'ajax.php',
         type : 'POST',
-        data:'fun='+fun+'&content='+text+"&id="+id,
+        data:'fun='+fun+'&content='+escape(text)+"&id="+id,
         dataType : 'html',
         success : function(code_html, statut){
             console.log(code_html)

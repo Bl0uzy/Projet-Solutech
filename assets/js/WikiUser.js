@@ -3,7 +3,8 @@ $(document).ready(function () {
         "paging": false,
         info: false,
         language: {
-            search: "Recherche :"
+            search: "Recherche :",
+            emptyTable:" "
         }
     })
 })

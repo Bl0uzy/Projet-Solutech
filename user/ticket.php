@@ -28,8 +28,8 @@ session_start();
 
 <head>
     <meta charset="utf-8" />
-    <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
         Ticket
@@ -59,7 +59,7 @@ session_start();
             <!--          </div> &ndash;&gt;-->
             <!--          &lt;!&ndash; <p>CT</p> &ndash;&gt;-->
             <!--        </a>-->
-            <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+            <a class="simple-text logo-normal">
                 <div class="logo-image-big">
                     <img src="../assets/img/logo-bannière.png">
                 </div>
@@ -103,7 +103,7 @@ session_start();
                         </button>
                     </div>
                     <?php
-                    //                    '<form action="editTicket.php"><div class="wrap newTicket"><input name="sujet" id="sujet" placeholder="Sujet" type="text" required><select name="nom" id="nom" class=selectUser><option value="1">Louis</option></select><input type="submit" class="btn" value="Valider"></div></form>'
+//                                        '<form action="editTicket.php"><div class="wrap newTicket"><input name="sujet" id="sujet" placeholder="Sujet" type="text" required><select name="nom" id="nom" class=selectUser><option value="1">Louis</option></select><input type="submit" class="btn" value="Valider"></div></form>'
                     ?>
                     <a class="navbar-brand">Ticket<img id="addTicket" data-toggle="popover"  data-content='<form action="editTicket.php"><div class="wrap newTicket"><input name="sujet" id="sujet" placeholder="Sujet" type="text" required><input type="submit" class="btn" value="Valider"></div></form>' src="../assets/img/icons/plus.svg" alt="Créer un ticket" title="Créer un ticket" width="20px" style="margin-left: 10px"></a>
                 </div>
@@ -156,7 +156,6 @@ session_start();
                 <div class="row">
                     <div class="credits ml-auto">
               <span class="copyright">
-                © 2020, made with <i class="fa fa-heart heart"></i> by Creative Tim
               </span>
                     </div>
                 </div>

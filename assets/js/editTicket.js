@@ -136,10 +136,12 @@ function removeFile() {
     $(".delFile").click(function () {
         var fun = 'delFile'
         var path = $(this).prev().prev().attr('href')
-        var newPath = "."+path.substring(path.indexOf("/piecesJointes"))
+        // var newPath = "."+path.substring(path.indexOf("/piecesJointes"))
+        var newPath = "piecesJointesTickets/"+id+"/"+path.substring(path.lastIndexOf("/"))
+        console.log(newPath)
 
 
-        $.ajax({
+            $.ajax({
             url : 'ajax.php',
             type : 'GET',
             data:'fun='+fun+'&id='+id+'&path='+newPath+"&ticket="+ticket,

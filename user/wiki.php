@@ -62,7 +62,7 @@ $allWikis = $dbh ->query("SELECT * FROM wiki WHERE id IN (SELECT wiki_id FROM us
             <!--          </div> &ndash;&gt;-->
             <!--          &lt;!&ndash; <p>CT</p> &ndash;&gt;-->
             <!--        </a>-->
-            <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+            <a class="simple-text logo-normal">
                 <div class="logo-image-big">
                     <img src="../assets/img/logo-bannière.png">
                 </div>
@@ -167,7 +167,6 @@ $allWikis = $dbh ->query("SELECT * FROM wiki WHERE id IN (SELECT wiki_id FROM us
                 <div class="row">
                     <div class="credits ml-auto">
               <span class="copyright">
-                © 2020, made with <i class="fa fa-heart heart"></i> by Creative Tim
               </span>
                     </div>
                 </div>
